@@ -25,6 +25,14 @@ android {
             )
         }
     }
+
+    buildFeatures {
+        // Enable View Binding
+        viewBinding = true
+        // Enable Data Binding (if necessary)
+        dataBinding = true
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -32,7 +40,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
