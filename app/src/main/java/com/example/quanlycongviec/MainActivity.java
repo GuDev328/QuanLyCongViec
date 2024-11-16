@@ -13,13 +13,13 @@ import com.example.quanlycongviec.databinding.ActivityMainBinding;
 //import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
-
+    DBHelper db;
     ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        db= new DBHelper(this);
         // Inflate the binding layout
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
