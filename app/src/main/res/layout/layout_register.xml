@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/logo"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:layout_marginLeft="10dp"
+        android:textSize="17dp"
+        android:text="Đăng ký tài khoản"/>
+    <TableRow
+        android:layout_marginBottom="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="5">
+        <TextView android:layout_weight="3"
+            android:layout_width="match_parent"
+            android:textSize="17dp"
+            android:layout_marginLeft="10dp"
+            android:layout_height="wrap_content"
+            android:text="Email"/>
+        <EditText
+            android:layout_weight="2"
+            android:id="@+id/edtEmailR"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="--Nhập--"
+
+            android:layout_marginHorizontal="10dp"
+            android:background="@drawable/edittext_box"
+            android:padding="10dp"
+            android:inputType="textEmailAddress"
+            android:textColorHint="#B0BEC5" />
+    </TableRow>
+
+    <TableRow
+        android:layout_marginBottom="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="5">
+        <TextView android:layout_weight="3"
+            android:layout_width="match_parent"
+            android:textSize="17dp"
+            android:layout_marginLeft="10dp"
+            android:layout_height="wrap_content"
+            android:text="Họ tên"/>
+        <EditText
+            android:layout_weight="2"
+            android:id="@+id/editName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="--Nhập--"
+
+            android:layout_marginHorizontal="10dp"
+            android:background="@drawable/edittext_box"
+            android:padding="10dp"
+            android:inputType="textEmailAddress"
+            android:textColorHint="#B0BEC5" />
+    </TableRow>
+
+    <TableRow
+        android:layout_marginBottom="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="5">
+        <TextView android:layout_weight="3"
+            android:layout_width="match_parent"
+            android:textSize="17dp"
+            android:layout_marginLeft="10dp"
+            android:layout_height="wrap_content"
+            android:text="Giới tính "/>
+        <RadioGroup android:id="@+id/groupGender" android:orientation="horizontal" android:layout_weight="2">
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Nam"
+                android:buttonTint="@color/radio_button_color"
+                />
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Nữ"
+                android:buttonTint="@color/radio_button_color"
+                />
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Khác"
+                android:buttonTint="@color/radio_button_color"
+                />
+
+        </RadioGroup>
+    </TableRow>
+
+    <TableRow
+        android:layout_marginBottom="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="5">
+        <TextView android:layout_weight="3"
+            android:layout_width="match_parent"
+            android:textSize="17dp"
+            android:layout_marginLeft="10dp"
+            android:layout_height="wrap_content"
+            android:text="Ngày sinh"/>
+        <Button
+            android:layout_weight="2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginVertical="5dp"
+            style="@style/ButtonSecondStyle"
+            android:drawableEnd="@android:drawable/arrow_down_float"
+            android:text="Chọn ngày"
+            android:id="@+id/btnBirthDay"
+            />
+    </TableRow>
+
+
+    <TableRow
+        android:layout_marginBottom="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="5">
+        <TextView android:layout_weight="3"
+            android:layout_width="match_parent"
+            android:textSize="17dp"
+            android:layout_marginLeft="10dp"
+            android:layout_height="wrap_content"
+            android:text="Mật khẩu"/>
+        <EditText
+            android:layout_weight="2"
+            android:id="@+id/edtPasswordR"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="--Nhập--"
+            android:layout_marginHorizontal="10dp"
+            android:background="@drawable/edittext_box"
+            android:padding="10dp"
+            android:inputType="textPassword"
+            android:textColorHint="#B0BEC5" />
+    </TableRow>
+
+    <TableRow
+        android:layout_marginBottom="5dp"
+        android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:weightSum="5">
+    <TextView android:layout_weight="3"
+        android:layout_width="match_parent"
+        android:textSize="17dp"
+        android:layout_marginLeft="10dp"
+        android:layout_height="wrap_content"
+        android:text="Nhập lại "/>
+    <EditText
+        android:layout_weight="2"
+        android:id="@+id/edtRePassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="--Nhập--"
+
+        android:layout_marginHorizontal="10dp"
+        android:background="@drawable/edittext_box"
+        android:padding="10dp"
+        android:inputType="textPassword"
+        android:textColorHint="#B0BEC5" />
+</TableRow>
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Trở về đăng nhập"
+        android:textSize="17dp"
+        android:id="@+id/btnBackToLogin"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginVertical="5dp"
+        style="@style/ButtonSecondStyle"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="10dp"
+        android:layout_height="wrap_content"
+        android:text="Đăng ký"
+        android:textSize="17dp"
+        android:id="@+id/btnDangKyR"
+        style="@style/ButtonMainStyle"/>
+
+</LinearLayout>

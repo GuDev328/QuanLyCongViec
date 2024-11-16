@@ -7,12 +7,43 @@
     >
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Today"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:text="Công việc cần làm"/>
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:text="Công việc đã hoàn thành"/>
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+    </LinearLayout>
+    <Button
+        android:id="@+id/btnFixed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TRANG CHỦ"
-        android:textSize="20dp"
-        android:layout_gravity="center"
-        />
-
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:textSize="30dp"
+        android:text="+" />
 </FrameLayout>

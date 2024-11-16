@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class CRUD_DAO<T> {
-    private SQLiteDatabase db;
+    protected SQLiteDatabase db;
 
     public CRUD_DAO(Context context) {
         DBHelper dbHelper = new DBHelper(context);
@@ -20,7 +20,9 @@ public abstract class CRUD_DAO<T> {
 
     // Lấy tên bảng (phải được implement trong subclass)
     protected abstract String getTableName();
-
+    protected  SQLiteDatabase getDBInstance(){
+        return  this.db;
+    };
     // Chuyển từ Cursor -> Object (phải được implement trong subclass)
     protected abstract T fromCursor(Cursor cursor);
 
