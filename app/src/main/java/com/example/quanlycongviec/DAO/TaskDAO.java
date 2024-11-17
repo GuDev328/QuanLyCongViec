@@ -3,8 +3,11 @@ package com.example.quanlycongviec.DAO;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 
 import com.example.quanlycongviec.DTO.Task_DTO;
+
+import java.util.ArrayList;
 
 public class TaskDAO extends CRUD_DAO<Task_DTO> {
 
@@ -44,5 +47,44 @@ public class TaskDAO extends CRUD_DAO<Task_DTO> {
         values.put("status", task.getStatus());
         System.out.println(values);
         return values;
+    }
+
+    public ArrayList<Task_DTO> getListNotDone(String date){
+        SQLiteDatabase db = this.getDBInstance();
+        ArrayList<Task_DTO> list = new ArrayList<>();
+        // Cập nhật câu truy vấn để lọc theo date và status = 0
+        String query = "SELECT * FROM " + getTableName() +
+                " WHERE date = ? AND status = 0";
+
+        // Chạy truy vấn với tham số là ngày
+        Cursor cursor = db.rawQuery(query, new String[]{date});
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                list.add(fromCursor(cursor));
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+        return list;
+
+    }
+    public ArrayList<Task_DTO> getListDone(String date){
+        SQLiteDatabase db = this.getDBInstance();
+        ArrayList<Task_DTO> list = new ArrayList<>();
+        // Cập nhật câu truy vấn để lọc theo date và status = 0
+        String query = "SELECT * FROM " + getTableName() +
+                " WHERE date = ? AND status = 1";
+
+        // Chạy truy vấn với tham số là ngày
+        Cursor cursor = db.rawQuery(query, new String[]{date});
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                list.add(fromCursor(cursor));
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+        return list;
+
     }
 }

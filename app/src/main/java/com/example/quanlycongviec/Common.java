@@ -25,6 +25,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Common {
     public static void showAlertDialog(Context context, String title, String message) {
@@ -101,11 +103,11 @@ public class Common {
         spinner.setAdapter(adapter);
     }
 
-    public static void showDatePicker(Context context, Button btn, int dayDefault, int monthDefault, int yearDefault) {
+    public static void showDatePicker(Context context, Button btn, int dayDefault, int monthDefault, int yearDefault, final Runnable callback) {
         Calendar cal = Calendar.getInstance();
-        int year = yearDefault==-1? cal.get(Calendar.YEAR): yearDefault;
-        int month = monthDefault==-1? cal.get(Calendar.MONTH): monthDefault-1;
-        int day = dayDefault==-1? cal.get(Calendar.DAY_OF_MONTH): dayDefault;
+        int year = yearDefault == -1 ? cal.get(Calendar.YEAR) : yearDefault;
+        int month = monthDefault == -1 ? cal.get(Calendar.MONTH) : monthDefault - 1;
+        int day = dayDefault == -1 ? cal.get(Calendar.DAY_OF_MONTH) : dayDefault;
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(context,
                 new DatePickerDialog.OnDateSetListener() {
@@ -114,6 +116,9 @@ public class Common {
                         month = month + 1;
                         String date = dayOfMonth + "/" + month + "/" + year;
                         btn.setText(date);
+                        if (callback != null) {
+                            callback.run(); // gọi lại callback
+                        }
                     }
                 }, year, month, day);
         datePickerDialog.show();
@@ -136,5 +141,10 @@ public class Common {
 
         timePickerDialog.show();
     }
-
+    public static boolean isValidEmail(String email) {
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
 }
