@@ -147,4 +147,32 @@ public class Common {
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
+
+    public static void showConfirmDialog(Context context, String title, String message, Runnable onConfirm) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.setCancelable(false);
+
+        builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (onConfirm != null) {
+                    onConfirm.run(); // Chạy hàm callback khi người dùng chọn "Đồng ý"
+                }
+                dialog.dismiss(); // Đóng hộp thoại sau khi hoàn tất
+            }
+        });
+
+        builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss(); // Đóng hộp thoại nếu người dùng chọn "Hủy"
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
 }

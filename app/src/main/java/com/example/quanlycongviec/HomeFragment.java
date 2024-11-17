@@ -28,6 +28,7 @@ import com.example.quanlycongviec.DAO.TaskDAO;
 import com.example.quanlycongviec.DTO.Task_DTO;
 import com.example.quanlycongviec.TaskAction.TaskActionAdd;
 import com.example.quanlycongviec.TaskAction.TaskActionView;
+import com.example.quanlycongviec.TaskAction.TaskDoneView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -156,6 +157,16 @@ public class HomeFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), TaskActionView.class);
 
                 intent.putExtra("selectedIdTask", listNotDoneArr.get(i).getId());
+                activityResultLauncher.launch(intent);
+            }
+        });
+
+        listDone.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(getActivity(), TaskDoneView.class);
+
+                intent.putExtra("selectedIdTask", listDoneArr.get(i).getId());
                 activityResultLauncher.launch(intent);
             }
         });
