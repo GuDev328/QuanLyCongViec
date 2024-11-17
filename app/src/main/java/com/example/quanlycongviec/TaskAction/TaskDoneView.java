@@ -22,17 +22,17 @@ import com.example.quanlycongviec.DTO.Category_DTO;
 import com.example.quanlycongviec.DTO.Task_DTO;
 import com.example.quanlycongviec.R;
 
-public class TaskActionView extends AppCompatActivity {
+public class TaskDoneView extends AppCompatActivity {
     TextView txtDateTime, txtCate, txtTitle, txtDescription;
-    Button btnConfirmDoneTask, btnCancelViewTask;
+    Button btnConfirmReDoTask, btnCancelViewTask;
     TaskDAO taskDAO;
     CategoryDAO categoryDAO;
-    ImageView iconEdit, iconDelete;
+    ImageView  iconDelete;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.task_action_view);
+        setContentView(R.layout.task_done_view);
         //Set Width cho Dialog
         if (getWindow() != null) {
             getWindow().setLayout(
@@ -64,28 +64,28 @@ public class TaskActionView extends AppCompatActivity {
                 }
             });
 
-            btnConfirmDoneTask = findViewById(R.id.btnConfirmDoneTask);
-            btnConfirmDoneTask.setOnClickListener(new View.OnClickListener() {
+            btnConfirmReDoTask = findViewById(R.id.btnConfirmReDoTask);
+            btnConfirmReDoTask.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    task.setStatus(1);
+                    task.setStatus(0);
                     taskDAO.update(task.getId(), task);
                     Intent resultIntent = new Intent();
                     setResult(RESULT_OK, resultIntent);  // Gửi kết quả về Activity 1
                     finish();
                 }
             });
-            
+
             iconDelete= findViewById(R.id.iconDelete);
             iconDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Common.showConfirmDialog(TaskActionView.this, "Xoá công việc",
+                    Common.showConfirmDialog(TaskDoneView.this, "Xoá công việc",
                             "Bạn có chắc chắn muốn xoá công việc này?", new Runnable() {
                                 @Override
                                 public void run() {
                                     taskDAO.delete(task.getId());
-                                    Toast.makeText(TaskActionView.this, "Xoá thành công", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(TaskDoneView.this, "Xoá thành công", Toast.LENGTH_SHORT).show();
                                     Intent resultIntent = new Intent();
                                     setResult(RESULT_OK, resultIntent);  // Gửi kết quả về Activity 1
                                     finish();
@@ -94,7 +94,7 @@ public class TaskActionView extends AppCompatActivity {
 
                 }
             });
-            
+
 
         } else {
             Toast.makeText(this, "Không xác định được công việc!", Toast.LENGTH_SHORT).show();
