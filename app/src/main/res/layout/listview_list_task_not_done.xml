@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <!-- item_layout.xml -->
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        tools:ignore="MissingConstraints">
+
+        <!-- Time - Title - Status -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start|center_vertical">
+
+            <!-- Time Text -->
+            <TextView
+                android:id="@+id/timeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="12:00 PM"
+                android:paddingEnd="10dp"
+                android:textSize="14sp"/>
+
+            <!-- Dấu gạch dọc -->
+            <TextView
+                android:text="|"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:textColor="#000000"/>
+
+            <!-- Title Text -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/titleText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Sample Title"
+                    android:textSize="14sp"
+                    android:paddingStart="10dp"/>
+                <TextView
+                    android:layout_gravity="end"
+                    android:background="@drawable/rounded_textview"
+                    android:id="@+id/titleCate"
+                    android:paddingVertical="3dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/white"
+                    android:paddingRight="12dp"
+                    android:paddingLeft="0dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Sample Cate"
+                    android:textSize="14sp"
+                    android:paddingStart="10dp"/>
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
