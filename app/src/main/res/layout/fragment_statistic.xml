@@ -1,17 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".StatisticFragment">
+    android:padding="16dp">
 
-    <!-- TODO: Update blank fragment layout -->
+    <!-- Phần tiêu đề -->
     <TextView
+        android:id="@+id/tvHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="THỐNG KÊ"
-        android:textSize="20dp"
-        android:layout_gravity="center"
-        />
+        android:text="Tổng quan về Nhiệm vụ"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-</FrameLayout>
+    <!-- Thống kê nhiệm vụ hoàn thành -->
+    <TextView
+        android:id="@+id/tvCompletedTasks"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Nhiệm vụ đã hoàn thành"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:background="@drawable/bg_task_statistic"
+        android:padding="16dp"
+        app:layout_constraintTop_toBottomOf="@id/tvHeader"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tvPendingTasks"
+        app:layout_constraintWidth_percent="0.5" />
+
+    <!-- Thống kê nhiệm vụ chưa hoàn thành -->
+    <TextView
+        android:id="@+id/tvPendingTasks"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Nhiệm vụ chưa hoàn thành"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:background="@drawable/bg_task_statistic"
+        android:padding="16dp"
+        app:layout_constraintTop_toBottomOf="@id/tvHeader"
+        app:layout_constraintStart_toEndOf="@id/tvCompletedTasks"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.5" />
+
+    <!-- Biểu đồ cột -->
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        tools:layout_editor_absoluteX="17dp"
+        tools:layout_editor_absoluteY="131dp"
+        tools:ignore="MissingConstraints">
+
+        <TextView
+            android:id="@+id/label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="From: " />
+
+        <TextView
+            android:id="@+id/txtStart"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="To:" />
+
+        <TextView
+            android:id="@+id/txtFinish"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="" />
+
+<!--        <ImageButton-->
+<!--            android:id="@+id/showDatePicker"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:src="" />-->
+    </TableRow>
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/barChart"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="76dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvCompletedTasks" />
+
+    <!-- Biểu đồ tròn -->
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/pieChart"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        app:layout_constraintTop_toBottomOf="@id/barChart"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
