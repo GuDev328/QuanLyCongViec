@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    tools:context=".TaskAction.TaskActionView">
+    tools:context=".TaskAction.TaskDoneView">
     <LinearLayout
         android:background="@android:color/white"
         android:layout_width="match_parent"
@@ -19,12 +19,6 @@
             android:layout_marginBottom="5dp"
             android:layout_height="wrap_content">
 
-
-            <ImageView
-                android:id="@+id/iconEdit"
-                android:layout_marginRight="10dp"
-                android:layout_width="wrap_content"
-                android:src="@drawable/edit"/>
             <ImageView
                 android:id="@+id/iconDelete"
                 android:layout_width="wrap_content"
@@ -89,7 +83,7 @@
                 android:layout_marginVertical="5dp"
                 style="@style/ButtonSecondStyle"
                 android:textColor="@color/black"
-                android:text="Huỷ"
+                android:text="Đóng"
                 android:id="@+id/btnCancelViewTask"
                 />
             <Button
@@ -99,8 +93,8 @@
                 android:layout_marginHorizontal="10dp"
                 android:layout_marginVertical="5dp"
                 style="@style/ButtonMainStyle"
-                android:text="Đã hoàn thành"
-                android:id="@+id/btnConfirmDoneTask"
+                android:text="Chưa hoàn thành"
+                android:id="@+id/btnConfirmReDoTask"
                 />
         </TableRow>
     </LinearLayout>
