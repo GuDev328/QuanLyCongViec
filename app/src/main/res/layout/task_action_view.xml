@@ -5,6 +5,85 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     tools:context=".TaskAction.TaskActionView">
+    <LinearLayout
+        android:background="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints">
 
+        <TableRow android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2">
+            <TextView
+                android:layout_weight="2"
+                android:id="@+id/txtDateTime"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:text=" 9:00 - 12/12/2012"
+                android:textStyle="bold"
+                android:textSize="16dp"/>
+            <TextView
+                android:layout_gravity="end"
+                android:background="@drawable/rounded_textview"
+                android:id="@+id/txtCate"
+                android:paddingVertical="3dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/white"
+                android:paddingRight="12dp"
+                android:paddingLeft="0dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Sample Cate"
+                android:textSize="14sp"
+                android:paddingStart="10dp"/>
+        </TableRow>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Title"
+            android:id="@+id/txtTitle"
+            android:textSize="17dp"
+            android:textStyle="bold"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtDescription"
+            android:text="Description"
+            android:textSize="16dp"
+            />
+        <TableRow
+            android:layout_marginBottom="5dp"
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            android:weightSum="4">
+            <Button
+                android:layout_weight="2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="5dp"
+                style="@style/ButtonSecondStyle"
+                android:textColor="@color/black"
+                android:text="Huỷ"
+                android:id="@+id/btnCancelViewTask"
+                />
+            <Button
+                android:layout_weight="2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="5dp"
+                style="@style/ButtonMainStyle"
+                android:text="Đã hoàn thành"
+                android:id="@+id/btnConfirmDoneTask"
+                />
+        </TableRow>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

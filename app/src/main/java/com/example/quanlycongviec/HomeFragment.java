@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -26,6 +27,7 @@ import com.example.quanlycongviec.CustomAdapter.TaskAdapter;
 import com.example.quanlycongviec.DAO.TaskDAO;
 import com.example.quanlycongviec.DTO.Task_DTO;
 import com.example.quanlycongviec.TaskAction.TaskActionAdd;
+import com.example.quanlycongviec.TaskAction.TaskActionView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -112,7 +114,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), TaskActionAdd.class);
-                activityResultLauncher.launch(intent); // Thay vì startActivity(intent)
+                activityResultLauncher.launch(intent);
             }
         });
 
@@ -146,6 +148,18 @@ public class HomeFragment extends Fragment {
 
             }
         });
+
+
+        listNotDone.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(getActivity(), TaskActionView.class);
+
+                intent.putExtra("selectedIdTask", listNotDoneArr.get(i).getId());
+                activityResultLauncher.launch(intent);
+            }
+        });
+
 
         getDataTask();
         return view;
