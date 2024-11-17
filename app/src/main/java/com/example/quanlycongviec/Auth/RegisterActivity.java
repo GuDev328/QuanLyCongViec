@@ -44,12 +44,12 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (btnBirthDay.getText().toString().equals("Chọn ngày")) {
-                    Common.showDatePicker(RegisterActivity.this, btnBirthDay, -1, -1, -1);
+                    Common.showDatePicker(RegisterActivity.this, btnBirthDay, -1, -1, -1, null);
                 } else {
                     String ngayDangChon = btnBirthDay.getText().toString();
                     String ngayArr[] = ngayDangChon.split("/");
 
-                    Common.showDatePicker(RegisterActivity.this, btnBirthDay, Integer.parseInt(ngayArr[0]), Integer.parseInt(ngayArr[1]), Integer.parseInt(ngayArr[2]));
+                    Common.showDatePicker(RegisterActivity.this, btnBirthDay, Integer.parseInt(ngayArr[0]), Integer.parseInt(ngayArr[1]), Integer.parseInt(ngayArr[2]), null);
                 }
             }
         });

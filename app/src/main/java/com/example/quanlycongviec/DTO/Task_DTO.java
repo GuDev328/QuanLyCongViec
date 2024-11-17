@@ -1,5 +1,7 @@
 package com.example.quanlycongviec.DTO;
 
+import androidx.annotation.NonNull;
+
 public class Task_DTO {
     private long id; // Đã là long
     private long categoryId; // Chuyển từ int sang long
@@ -46,4 +48,10 @@ public class Task_DTO {
 
     public int getStatus() { return status; }
     public void setStatus(int status) { this.status = status; }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return getTitle();
+    }
 }
