@@ -1,5 +1,6 @@
 package com.example.quanlycongviec;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ import com.example.quanlycongviec.TaskAction.TaskActionAdd;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -78,17 +80,18 @@ public class HomeFragment extends Fragment {
 
     }
 
-//    ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
-//            new ActivityResultContracts.StartActivityForResult(),
-//            new ActivityResultCallback<ActivityResult>() {
-//                @Override
-//                public void onActivityResult(ActivityResult result) {
-//                    if (result.getResultCode() == RESULT_OK) {
-//                        // Hàm bạn muốn gọi lại sau khi Activity 2 đóng
-//                        getDataTask();
-//                    }
-//                }
-//            });
+    //Chạy lại khi đóng activity khác
+    ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+
+                        getDataTask();
+                    }
+                }
+            });
 
     Button btnAdd, btnPickDate;
     ListView listNotDone, listDone;
@@ -109,7 +112,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), TaskActionAdd.class);
-                startActivity(intent);
+                activityResultLauncher.launch(intent); // Thay vì startActivity(intent)
             }
         });
 
@@ -150,10 +153,12 @@ public class HomeFragment extends Fragment {
 
     public void getDataTask(){
         listNotDoneArr= taskDAO.getListNotDone(btnPickDate.getText().toString());
+        Collections.reverse(listNotDoneArr);
         TaskAdapter adapter = new TaskAdapter(getActivity(), R.layout.listview_list_task_not_done, listNotDoneArr);
         listNotDone.setAdapter(adapter);
 
         listDoneArr= taskDAO.getListDone(btnPickDate.getText().toString());
+        Collections.reverse(listDoneArr);
         TaskAdapter adapter2 = new TaskAdapter(getActivity(), R.layout.listview_list_task_not_done, listDoneArr);
         listDone.setAdapter(adapter2);
     }

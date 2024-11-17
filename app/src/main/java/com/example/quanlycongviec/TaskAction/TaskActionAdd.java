@@ -136,6 +136,8 @@ public class TaskActionAdd extends AppCompatActivity {
                long taskId = taskDAO.insert(newTask);
                 if(taskId!= -1){
                     Toast.makeText(TaskActionAdd.this, "Tạo công việc thành công", Toast.LENGTH_SHORT).show();
+                    Intent resultIntent = new Intent();
+                    setResult(RESULT_OK, resultIntent);  // Gửi kết quả về Activity 1
                     finish();
                 }else {
                     Toast.makeText(TaskActionAdd.this, "Tạo công việc thất bại", Toast.LENGTH_SHORT).show();
