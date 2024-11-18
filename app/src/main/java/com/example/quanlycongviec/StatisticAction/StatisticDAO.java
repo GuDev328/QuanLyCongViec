@@ -25,5 +25,50 @@ public class StatisticDAO {
         UserSession userSession = UserSession.getInstance();
         user_id = userSession.getUserId();
     }
-
+    @SuppressLint("Range")
+    public List<Task_DTO> getTaskData(String startDateString, String finishDateString){
+        return this.taskDAO.getTasks(startDateString,finishDateString);
+    }
+    public ArrayList<StatisticStatus> getPercentStatus(String tableName, String startDateString, String finishDateString){
+        db = dbHelper.getWritableDatabase();
+        ArrayList<StatisticStatus> result = new ArrayList<>();
+        Cursor cursor = null;
+        try {
+            String[] selectionArgs = {startDateString, finishDateString};
+            String query = "SELECT status, COUNT(*) AS count, (COUNT(*) * 100.0 / (SELECT COUNT(*) FROM " + tableName + " WHERE user_id = " + this.user_id + ")) AS percentage " +
+                    "FROM " + tableName + " " +
+                    "WHERE user_id = " + this.user_id;
+            if (startDateString != null && finishDateString != null) {
+                query += " AND created_date BETWEEN ? AND ?";
+            }
+            query += " GROUP BY status";
+            if(startDateString!=null && finishDateString!=null){
+                cursor = db.rawQuery(query, selectionArgs);
+            }
+            else{
+                cursor = db.rawQuery(query, null);
+            }
+            // Duyệt qua dữ liệu từ Cursor
+            while (cursor.moveToNext()) {
+                @SuppressLint("Range") String status = cursor.getString(cursor.getColumnIndex("status"));
+                @SuppressLint("Range") float percentage = cursor.getFloat(cursor.getColumnIndex("percentage"));
+                StatisticStatus newSS = new StatisticStatus(status,percentage);
+                result.add(newSS);
+            }
+        } catch (Exception e) {
+            Log.e("PieChart", e+"");
+        } finally {
+            // Đảm bảo đóng cursor và SQLiteDatabase
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null) {
+                db.close();
+            }
+        }
+        return result;
+    }
+    public ArrayList<StatisticStatus> getTaskStatus(String startDateString, String finishDateString){
+        return getPercentStatus("Task", startDateString, finishDateString);
+    }
 }

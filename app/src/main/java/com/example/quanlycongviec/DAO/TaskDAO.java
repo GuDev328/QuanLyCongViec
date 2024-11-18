@@ -1,19 +1,32 @@
 package com.example.quanlycongviec.DAO;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.example.quanlycongviec.DBHelper;
 import com.example.quanlycongviec.DTO.Task_DTO;
+import com.example.quanlycongviec.StatisticAction.UserSession;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TaskDAO extends CRUD_DAO<Task_DTO> {
 
+    private SQLiteDatabase db;
+    private int user_id;
+    private DBHelper dbHelper;
+
     public TaskDAO(Context context) {
         super(context);
+        DBHelper dbHelper = new DBHelper(context);
+        db = dbHelper.getWritableDatabase();
+        UserSession userSession = UserSession.getInstance();
+        user_id = userSession.getUserId();
     }
+
 
     @Override
     protected String getTableName() {
@@ -86,5 +99,45 @@ public class TaskDAO extends CRUD_DAO<Task_DTO> {
         }
         return list;
 
+    }
+    @SuppressLint("Range")
+    public List<Task_DTO> getTasks(String startDateString, String finishDateString) {
+        List<Task_DTO> list = new ArrayList<>();
+        Cursor cursor = null;
+        String query = "SELECT * FROM Task WHERE user_id = ?";
+        String[] selectionArgs;
+
+        // Lọc theo ngày tháng nếu có
+        if (startDateString != null && finishDateString != null) {
+            query += " AND date BETWEEN ? AND ?";
+            selectionArgs = new String[]{String.valueOf(this.user_id), startDateString, finishDateString};
+        } else {
+            selectionArgs = new String[]{String.valueOf(this.user_id)};
+        }
+
+        cursor = db.rawQuery(query, selectionArgs);
+
+        // Duyệt qua kết quả trả về và thêm vào danh sách
+        while (cursor.moveToNext()) {
+            Task_DTO task = new Task_DTO();
+            task.setId(cursor.getInt(cursor.getColumnIndex("id")));
+            task.setCategoryId(cursor.getInt(cursor.getColumnIndex("category_id")));
+            task.setUserId(cursor.getInt(cursor.getColumnIndex("user_id")));
+            task.setDate(cursor.getString(cursor.getColumnIndex("date")));
+            task.setTime(cursor.getString(cursor.getColumnIndex("time")));
+            task.setTitle(cursor.getString(cursor.getColumnIndex("title")));
+            task.setDescription(cursor.getString(cursor.getColumnIndex("description")));
+            task.setStatus(cursor.getInt(cursor.getColumnIndex("status")));
+            list.add(task);
+        }
+
+        if (cursor != null && !cursor.isClosed()) {
+            cursor.close();
+        }
+        return list;
+    }
+
+    public List<Task_DTO> getAllTasks() {
+        return getTasks(null, null);
     }
 }
