@@ -12,6 +12,9 @@ public class Task_DTO {
     private String description;
     private int status;
 
+    public Task_DTO() {
+
+    }
     // Constructor
     public Task_DTO(long id, long categoryId, long userId, String date, String time, String title, String description, int status) {
         this.id = id;
@@ -48,7 +51,13 @@ public class Task_DTO {
 
     public int getStatus() { return status; }
     public void setStatus(int status) { this.status = status; }
+    public int getCompleted() {
+        return status == 1 ? 1 : 0;
+    }
 
+    public int getPending() {
+        return status == 0 ? 1 : 0;
+    }
     @NonNull
     @Override
     public String toString() {

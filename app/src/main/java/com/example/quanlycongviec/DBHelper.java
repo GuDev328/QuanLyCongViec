@@ -1,10 +1,14 @@
 package com.example.quanlycongviec;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.github.mikephil.charting.data.BarEntry;
+
 import java.io.File;
+import java.util.ArrayList;
 
 public class DBHelper extends SQLiteOpenHelper {
 
@@ -59,6 +63,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 "VALUES (1, 'Cá nhân', 'Cá nhân')");
         db.execSQL("INSERT INTO Category (user_id, name, description) " +
                 "VALUES (1, 'Công việc', 'Công việc')");
+        insertSampleData();
     }
 
     @Override
@@ -69,5 +74,89 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS Task");
         db.execSQL("DROP TABLE IF EXISTS Note");
         onCreate(db);
+    }
+    public void insertSampleData() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("INSERT INTO Task (date, status) VALUES ('2024-11-17', 1)");
+        db.execSQL("INSERT INTO Task (date, status) VALUES ('2024-11-17', 1)");
+        db.execSQL("INSERT INTO Task (date, status) VALUES ('2024-11-18', 0)");
+        db.execSQL("INSERT INTO Task (date, status) VALUES ('2024-11-18', 1)");
+        db.execSQL("INSERT INTO Task (date, status) VALUES ('2024-11-19', 0)");
+    }
+    public ArrayList<BarEntry> getTaskCountByDateRange(String startDate, String endDate) {
+        ArrayList<BarEntry> barEntries = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Truy vấn nhiệm vụ theo khoảng ngày
+        Cursor cursor = db.rawQuery(
+                "SELECT date, COUNT(*) as count " +
+                        "FROM Task " +
+                        "WHERE date BETWEEN ? AND ? " +
+                        "GROUP BY date ORDER BY date",
+                new String[]{startDate, endDate}
+        );
+
+        int index = 0; // Dùng để hiển thị trên trục X
+        if (cursor.moveToFirst()) {
+            do {
+                String date = cursor.getString(0); // Ngày
+                int count = cursor.getInt(1);     // Số nhiệm vụ
+                barEntries.add(new BarEntry(index, count));
+                index++;
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return barEntries;
+    }
+
+    public ArrayList<String> getTaskDatesByRange(String startDate, String endDate) {
+        ArrayList<String> dates = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Truy vấn danh sách ngày theo khoảng ngày
+        Cursor cursor = db.rawQuery(
+                "SELECT DISTINCT date " +
+                        "FROM Task " +
+                        "WHERE date BETWEEN ? AND ? " +
+                        "ORDER BY date",
+                new String[]{startDate, endDate}
+        );
+
+        if (cursor.moveToFirst()) {
+            do {
+                dates.add(cursor.getString(0));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return dates;
+    }
+    public ArrayList<String> getTaskDates() {
+        ArrayList<String> dates = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT DISTINCT date FROM Task ORDER BY date", null);
+        if (cursor.moveToFirst()) {
+            do {
+                dates.add(cursor.getString(0));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return dates;
+    }
+    public ArrayList<BarEntry> getTaskCountByDate() {
+        ArrayList<BarEntry> barEntries = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT date, COUNT(*) as count FROM Task GROUP BY date ORDER BY date", null);
+
+        int index = 0; // Dùng làm trục X (vị trí trên biểu đồ)
+        if (cursor.moveToFirst()) {
+            do {
+                String date = cursor.getString(0); // Lấy ngày
+                int count = cursor.getInt(1);     // Lấy số lượng nhiệm vụ
+                barEntries.add(new BarEntry(index, count));
+                index++;
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return barEntries;
     }
 }
