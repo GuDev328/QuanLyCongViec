@@ -1,0 +1,49 @@
+<!-- res/layout/category_view.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TableRow android:layout_width="match_parent"
+        android:gravity="end"
+        android:layout_marginBottom="5dp"
+        android:layout_height="wrap_content">
+
+
+        <ImageView
+            android:id="@+id/btnSuaCategory"
+            android:layout_marginRight="10dp"
+            android:layout_width="wrap_content"
+            android:src="@drawable/edit"/>
+        <ImageView
+            android:id="@+id/btnDeleteCategory"
+            android:layout_width="wrap_content"
+            android:src="@drawable/delete"/>
+
+
+    </TableRow>
+
+    <TextView
+        android:id="@+id/txtCategoryName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Category Name"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txtCategoryDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Category Description"
+        android:textSize="16sp"
+        android:layout_marginTop="8dp" />
+
+    <Button
+        android:id="@+id/btnCloseCategoryView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Đóng"
+        android:layout_marginTop="8dp" />
+</LinearLayout>

@@ -1,0 +1,58 @@
+<!-- res/layout/category_edit.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:textSize="17dp"
+        android:textColor="@color/black"
+        android:layout_marginLeft="10dp"
+        android:layout_height="wrap_content"
+        android:text="Danh mục:"/>
+    <EditText
+        android:id="@+id/edtCategoryName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="--Nhập--"
+        android:textColor="@color/black"
+        android:layout_marginHorizontal="10dp"
+        android:background="@drawable/edittext_box"
+        android:padding="6dp"
+        android:textColorHint="#B0BEC5" />
+    <TextView
+        android:layout_width="match_parent"
+        android:textSize="17dp"
+        android:textColor="@color/black"
+        android:layout_marginLeft="10dp"
+        android:layout_height="wrap_content"
+        android:text="Danh mục:"/>
+    <EditText
+        android:id="@+id/edtCategoryDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="--Nhập--"
+        android:textColor="@color/black"
+        android:layout_marginHorizontal="10dp"
+        android:background="@drawable/edittext_box"
+        android:padding="6dp"
+        android:textColorHint="#B0BEC5" />
+
+    <Button
+        android:id="@+id/btnSaveCategory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="Lưu thay đổi"
+        android:layout_marginTop="16dp" />
+
+    <Button
+        android:id="@+id/btnCancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="Hủy"
+        android:layout_marginTop="8dp" />
+</LinearLayout>
