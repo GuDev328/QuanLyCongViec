@@ -18,6 +18,11 @@
             android:label="Chỉnh sửa công việc"
             android:theme="@style/CustomDialogTheme"/>
         <activity
+            android:name=".CategoryAction.CategoryEdit"
+            android:exported="false"
+            android:label="Chỉnh sửa danh mục"
+            android:theme="@style/CustomDialogTheme"/>
+        <activity
             android:name=".TaskAction.TaskDoneView"
             android:exported="false"
             android:label="Chi tiết công việc"
@@ -28,9 +33,19 @@
             android:label="Chi tiết công việc"
             android:theme="@style/CustomDialogTheme" />
         <activity
+            android:name=".CategoryAction.CategoryView"
+            android:exported="false"
+            android:label="Chi tiết danh mục"
+            android:theme="@style/CustomDialogTheme" />
+        <activity
             android:name=".TaskAction.TaskActionAdd"
             android:exported="false"
             android:label="Tạo công việc"
+            android:theme="@style/CustomDialogTheme" />
+        <activity
+            android:name=".CategoryAction.CategoryAdd"
+            android:exported="false"
+            android:label="Tạo danh mục"
             android:theme="@style/CustomDialogTheme" />
         <activity
             android:name=".Auth.ForgotPassword"

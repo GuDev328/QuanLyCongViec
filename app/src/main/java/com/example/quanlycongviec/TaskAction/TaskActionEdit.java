@@ -147,13 +147,6 @@ public class TaskActionEdit extends AppCompatActivity {
                     }
                 }
             });
-
-
-
-
-
-
-
         } else {
             Toast.makeText(this, "Không xác định được công việc!", Toast.LENGTH_SHORT).show();
         }
@@ -165,12 +158,6 @@ public class TaskActionEdit extends AppCompatActivity {
                     WindowManager.LayoutParams.WRAP_CONTENT // Chiều cao tự động
             );
         }
-
-
-
-
-
-
     }
     public static long findCategoryByName(ArrayList<Category_DTO> categoryList, String name) {
         for (Category_DTO category : categoryList) {

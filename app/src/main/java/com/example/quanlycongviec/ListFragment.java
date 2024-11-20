@@ -1,12 +1,35 @@
 package com.example.quanlycongviec;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ListView;
+
+import com.example.quanlycongviec.CategoryAction.CategoryAdd;
+import com.example.quanlycongviec.CategoryAction.CategoryView;
+import com.example.quanlycongviec.CustomAdapter.CategoryAdapter;
+import com.example.quanlycongviec.CustomAdapter.TaskAdapter;
+import com.example.quanlycongviec.DAO.CategoryDAO;
+import com.example.quanlycongviec.DAO.TaskDAO;
+import com.example.quanlycongviec.DTO.Category_DTO;
+import com.example.quanlycongviec.DTO.Task_DTO;
+import com.example.quanlycongviec.TaskAction.TaskActionAdd;
+import com.example.quanlycongviec.TaskAction.TaskActionView;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -55,10 +78,59 @@ public class ListFragment extends Fragment {
         }
     }
 
+    //Chạy lại khi đóng activity khác
+    ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        getDataTask();
+                    }
+                }
+            });
+
+    Button btnAddDM;
+    ListView listDM;
+    ArrayList<Category_DTO> listDmArr;
+    CategoryDAO danhMucDAO;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_list, container, false);
+        View view= inflater.inflate(R.layout.fragment_list, container, false);
+
+        danhMucDAO = new CategoryDAO(getActivity());
+        listDM = view.findViewById(R.id.listViewDanhMuc);
+        btnAddDM= view.findViewById(R.id.btnThemDM);
+
+        btnAddDM.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), CategoryAdd.class);
+                activityResultLauncher.launch(intent);
+            }
+        });
+
+        listDM.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(getActivity(), CategoryView.class);
+
+                intent.putExtra("selectedCategoryId", listDmArr.get(i).getId());
+                activityResultLauncher.launch(intent);
+            }
+        });
+
+        getDataTask();
+        return view;
     }
+
+    public void getDataTask(){
+        listDmArr= danhMucDAO.getAll();
+        CategoryAdapter adapter2 = new CategoryAdapter(getActivity(), R.layout.listview_category, listDmArr);
+        listDM.setAdapter(adapter2);
+    }
+
 }
