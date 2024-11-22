@@ -14,6 +14,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,6 +91,7 @@ public class NoteFragment extends Fragment {
     private RecyclerView recyclerView;
     private NoteAdapter noteAdapter;
     private ArrayList<Note_DTO> noteList = null;
+    private ArrayList<Note_DTO> filteredNoteList = null; // Thêm danh sách lọc
     private NoteDAO noteDao;
     private EditText txtSearch;
     private Toolbar toolbar;
@@ -117,6 +120,23 @@ public class NoteFragment extends Fragment {
             Intent intent = new Intent(getContext(), NoteActionAddActivity.class);
             activityResultLauncher.launch(intent);
         });
+
+        // Lắng nghe sự thay đổi trong EditText để lọc dữ liệu
+        txtSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                filterNotes(charSequence.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
+
         getDataNote();
 
         // Để khi có item được chọn thì toolbar sẽ xuất hiện
@@ -149,5 +169,21 @@ public class NoteFragment extends Fragment {
     public void onItemUnselected() {
         toolbar.setVisibility(View.GONE); // Ẩn toolbar
         txtSearch.setVisibility(View.VISIBLE); // Hiện lại EditText
+    }
+
+    // Lọc dữ liệu dựa trên từ khóa tìm kiếm
+    private void filterNotes(String query) {
+        if (query.isEmpty()) {
+            filteredNoteList = new ArrayList<>(noteList); // Nếu không có từ khóa tìm kiếm, hiển thị tất cả
+        } else {
+            filteredNoteList = new ArrayList<>();
+            for (Note_DTO note : noteList) {
+                if (note.getTitle().toLowerCase().contains(query.toLowerCase()) ||
+                        note.getContent().toLowerCase().contains(query.toLowerCase())) {
+                    filteredNoteList.add(note); // Thêm các ghi chú khớp với từ khóa vào danh sách
+                }
+            }
+        }
+        noteAdapter.updateNoteList(filteredNoteList); // Cập nhật danh sách vào adapter
     }
 }

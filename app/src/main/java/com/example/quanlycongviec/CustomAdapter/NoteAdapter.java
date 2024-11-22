@@ -65,6 +65,13 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         this.noteFragment = noteFragment; // Lưu NoteFragment vào biến
     }
 
+    // Phương thức để cập nhật lại danh sách ghi chú
+    public void updateNoteList(ArrayList<Note_DTO> newList) {
+        this.noteList = newList;
+        notifyDataSetChanged(); // Cập nhật RecyclerView
+    }
+
+
     @Override
     public NoteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.note_item, parent, false);
