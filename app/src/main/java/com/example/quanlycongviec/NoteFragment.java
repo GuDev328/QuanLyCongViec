@@ -8,13 +8,18 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.example.quanlycongviec.CustomAdapter.NoteAdapter;
 import com.example.quanlycongviec.DAO.NoteDAO;
@@ -86,13 +91,24 @@ public class NoteFragment extends Fragment {
     private RecyclerView recyclerView;
     private NoteAdapter noteAdapter;
     private ArrayList<Note_DTO> noteList = null;
+    private ArrayList<Note_DTO> filteredNoteList = null; // Thêm danh sách lọc
     private NoteDAO noteDao;
+    private EditText txtSearch;
+    private Toolbar toolbar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_note, container, false);
+
+        toolbar = view.findViewById(R.id.toolbarNote);
+        txtSearch = view.findViewById(R.id.txtSearch);
+
+        toolbar.setVisibility(View.GONE); //ẩn toolbar ban đầu
+        txtSearch.setVisibility(View.VISIBLE); //hiện txtSearch ban đầu
+        //((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+
         noteDao = new NoteDAO(getActivity());
         recyclerView = view.findViewById(R.id.recyclerView);
         StaggeredGridLayoutManager staggeredGridLayoutManager =
@@ -104,15 +120,70 @@ public class NoteFragment extends Fragment {
             Intent intent = new Intent(getContext(), NoteActionAddActivity.class);
             activityResultLauncher.launch(intent);
         });
+
+        // Lắng nghe sự thay đổi trong EditText để lọc dữ liệu
+        txtSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                filterNotes(charSequence.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
+
         getDataNote();
+
+        // Để khi có item được chọn thì toolbar sẽ xuất hiện
+        recyclerView.setOnLongClickListener(v -> {
+            int position = recyclerView.getChildAdapterPosition(v);
+            noteAdapter.toggleItemSelection(position); // Chuyển trạng thái của item
+
+            // Kiểm tra xem còn item nào được chọn hay không
+            if (noteAdapter.hasSelectedItems()) {
+                toolbar.setVisibility(View.VISIBLE); // Hiển thị toolbar khi có item được chọn
+                txtSearch.setVisibility(View.GONE); // Ẩn txtSearch khi có item được chọn
+            } else {
+                toolbar.setVisibility(View.GONE); // Ẩn toolbar khi không còn item nào được chọn
+                txtSearch.setVisibility(View.VISIBLE); // Hiển thị lại txtSearch
+            }
+            return true; // Xử lý nhấn lâu
+        });
+
         return view;
     }
 
     public void getDataNote() {
         noteList = noteDao.getAll();
-        noteAdapter = new NoteAdapter(noteList, getContext(), noteDao, activityResultLauncher);
+        noteAdapter = new NoteAdapter(noteList, getContext(), noteDao, activityResultLauncher, this);
         recyclerView.setAdapter(noteAdapter);
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
     }
 
+    // Cập nhật trạng thái khi bỏ chọn item
+    public void onItemUnselected() {
+        toolbar.setVisibility(View.GONE); // Ẩn toolbar
+        txtSearch.setVisibility(View.VISIBLE); // Hiện lại EditText
+    }
+
+    // Lọc dữ liệu dựa trên từ khóa tìm kiếm
+    private void filterNotes(String query) {
+        if (query.isEmpty()) {
+            filteredNoteList = new ArrayList<>(noteList); // Nếu không có từ khóa tìm kiếm, hiển thị tất cả
+        } else {
+            filteredNoteList = new ArrayList<>();
+            for (Note_DTO note : noteList) {
+                if (note.getTitle().toLowerCase().contains(query.toLowerCase()) ||
+                        note.getContent().toLowerCase().contains(query.toLowerCase())) {
+                    filteredNoteList.add(note); // Thêm các ghi chú khớp với từ khóa vào danh sách
+                }
+            }
+        }
+        noteAdapter.updateNoteList(filteredNoteList); // Cập nhật danh sách vào adapter
+    }
 }

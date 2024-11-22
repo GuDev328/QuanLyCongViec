@@ -4,10 +4,12 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,6 +19,8 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,6 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.quanlycongviec.DAO.NoteDAO;
 import com.example.quanlycongviec.DTO.Note_DTO;
 import com.example.quanlycongviec.NoteAction.NoteActionEditActivity;
+import com.example.quanlycongviec.NoteFragment;
 import com.example.quanlycongviec.R;
 
 import java.util.ArrayList;
@@ -40,8 +45,11 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     // Lưu các trạng thái hiệu ứng rung
     private ArrayList<Boolean> isShaking;
 
+    private NoteFragment noteFragment; // Thêm biến NoteFragment
 
-    public NoteAdapter(ArrayList<Note_DTO> noteList, Context context, NoteDAO noteDAO, ActivityResultLauncher<Intent> activityResultLauncher) {
+
+    public NoteAdapter(ArrayList<Note_DTO> noteList, Context context, NoteDAO noteDAO,
+                       ActivityResultLauncher<Intent> activityResultLauncher, NoteFragment noteFragment) {
         this.noteList = noteList;
         this.context = context;
         this.noteDAO = noteDAO;
@@ -53,7 +61,16 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             checkVisibility.add(false); // Tất cả ban đầu bị ẩn
             isShaking.add(false); // Tất cả ban đầu không rung
         }
+
+        this.noteFragment = noteFragment; // Lưu NoteFragment vào biến
     }
+
+    // Phương thức để cập nhật lại danh sách ghi chú
+    public void updateNoteList(ArrayList<Note_DTO> newList) {
+        this.noteList = newList;
+        notifyDataSetChanged(); // Cập nhật RecyclerView
+    }
+
 
     @Override
     public NoteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -92,6 +109,29 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     public void toggleItemSelection(int position) {
         checkVisibility.set(position, !checkVisibility.get(position)); // Chuyển đổi trạng thái chọn
         notifyItemChanged(position); // Cập nhật lại item
+
+        // Kiểm tra nếu không còn item nào được chọn
+        boolean anyItemSelected = false;
+        for (Boolean isChecked : checkVisibility) {
+            if (isChecked) {
+                anyItemSelected = true;
+                break;
+            }
+        }
+
+        if (!anyItemSelected && noteFragment != null) {
+            noteFragment.onItemUnselected(); // Gọi phương thức trong Fragment để ẩn toolbar và hiện lại EditText
+        }
+    }
+
+    // Kiểm tra xem có item nào được chọn hay không
+    public boolean hasSelectedItems() {
+        for (Boolean isChecked : checkVisibility) {
+            if (isChecked) {
+                return true; // Nếu có ít nhất 1 item được chọn
+            }
+        }
+        return false; // Nếu không có item nào được chọn
     }
 
     // Hiệu ứng rung liên tục
@@ -136,12 +176,11 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                        long noteId = (long) view.getTag();
-                        //Chuyển id qua màn hin sửa
-                        Intent intent = new Intent(view.getContext(), NoteActionEditActivity.class);
-                        intent.putExtra("selectedIdNote", noteId);
-                        activityResultLauncher.launch(intent);
-
+                    long noteId = (long) view.getTag();
+                    //Chuyển id qua màn hin sửa
+                    Intent intent = new Intent(view.getContext(), NoteActionEditActivity.class);
+                    intent.putExtra("selectedIdNote", noteId);
+                    activityResultLauncher.launch(intent);
                 }
             });
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -149,10 +188,27 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
                 public boolean onLongClick(View view) {
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
-                        // Đổi trạng thái hiển thị của nút tích
-                        toggleItemSelection(position);
+                        toggleItemSelection(position); // Đổi trạng thái hiển thị của nút check
+
+                        Activity activity = context instanceof Activity ? (Activity) context : null;
+                        if (activity != null && activity instanceof AppCompatActivity) {
+                            // Lấy Fragment trực tiếp từ FragmentManager
+                            NoteFragment fragment = (NoteFragment) ((AppCompatActivity) activity).getSupportFragmentManager()
+                                    .findFragmentById(R.id.frame_layout);
+
+                            if (fragment != null && fragment.isAdded()) {
+                                Toolbar toolbar = fragment.getView().findViewById(R.id.toolbarNote);
+                                if (toolbar != null) {
+                                    toolbar.setVisibility(View.VISIBLE); // Hiển thị toolbar
+                                }
+                                EditText txtSearch = fragment.getView().findViewById(R.id.txtSearch);
+                                if (txtSearch != null) {
+                                    txtSearch.setVisibility(View.GONE); // Ẩn EditText
+                                }
+                            }
+                        }
                     }
-                    return true;
+                    return true; // Xử lý nhấn lâu
                 }
             });
         }

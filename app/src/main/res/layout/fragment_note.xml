@@ -8,12 +8,24 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarNote"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/teal_2"
+            android:visibility="gone"> <!-- Ẩn toolbar ban đầu -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Select Notes"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:textColor="#ffffff" />
+        </androidx.appcompat.widget.Toolbar>
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -34,7 +46,7 @@
                 android:paddingStart="16dp"
                 android:textColor="#000000"
                 android:textColorHint="#373232"
-
+                android:visibility="visible"
                 />
         </TableRow>
 
@@ -69,8 +81,4 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </TableRow>
     </LinearLayout>
-
-
-
-
 </FrameLayout>
