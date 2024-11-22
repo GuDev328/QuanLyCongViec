@@ -47,12 +47,12 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         this.noteDAO = noteDAO;
         this.activityResultLauncher = activityResultLauncher;
         // Khởi tạo trạng thái hiển thị của nút tích
-        //this.checkVisibility = new ArrayList<>();
-//        this.isShaking = new ArrayList<>();
-//        for (int i = 0; i < noteList.size(); i++) {
-//            checkVisibility.add(false); // Tất cả ban đầu bị ẩn
-//            isShaking.add(false); // Tất cả ban đầu không rung
-//        }
+        this.checkVisibility = new ArrayList<>();
+        this.isShaking = new ArrayList<>();
+        for (int i = 0; i < noteList.size(); i++) {
+            checkVisibility.add(false); // Tất cả ban đầu bị ẩn
+            isShaking.add(false); // Tất cả ban đầu không rung
+        }
     }
 
     @Override
@@ -68,15 +68,15 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         holder.content.setText(card.getContent());
 
         // Cập nhật trạng thái hiển thị của nút tích và màu nền
-//        if (checkVisibility.get(position)) {
-//            holder.checkButton.setVisibility(View.VISIBLE);
-//            holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.teal_2)); // Đổi màu
-//            startShaking(holder.cardView, position); // Bắt đầu rung
-//        } else {
-//            holder.checkButton.setVisibility(View.GONE);
-//            holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.white)); // Màu nền gốc
-//            stopShaking(holder.cardView, position); // Dừng rung
-//        }
+        if (checkVisibility.get(position)) {
+            holder.checkButton.setVisibility(View.VISIBLE);
+            holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.teal_2)); // Đổi màu
+            startShaking(holder.cardView, position); // Bắt đầu rung
+        } else {
+            holder.checkButton.setVisibility(View.GONE);
+            holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.white)); // Màu nền gốc
+            stopShaking(holder.cardView, position); // Dừng rung
+        }
 
         // Lưu id vào tag của view để dùng sau
         holder.itemView.setTag(card.getId());

@@ -98,6 +98,9 @@ public class NoteActionAddActivity extends AppCompatActivity {
         long noteId = noteDAO.insert(newNote);
         if (noteId != -1) {
             Toast.makeText(NoteActionAddActivity.this, "Tạo ghi chú thành công", Toast.LENGTH_SHORT).show();
+            editTextTitle.setText("");
+            editTextContent.setText("");
+            editTextTitle.requestFocus();
             Intent resultIntent = new Intent();
             setResult(RESULT_OK, resultIntent);  // Gửi kết quả về Activity 1
         } else {
