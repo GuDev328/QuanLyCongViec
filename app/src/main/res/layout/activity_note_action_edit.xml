@@ -24,17 +24,32 @@
             android:textStyle="bold"/>
     </androidx.appcompat.widget.Toolbar>
 
+    <!-- Tiêu đề -->
     <EditText
         android:id="@+id/editTextTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Nhập tiêu đề"
-        android:minHeight="48dp"/>
+        android:minHeight="48dp"
+        android:background="@null"
+        android:padding="8dp"
+        android:textSize="20dp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray"/>
 
     <EditText
         android:id="@+id/editTextContent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@null"
         android:hint="Nhập mô tả"
-        android:minHeight="48dp"/>
+        android:minHeight="48dp"
+        android:inputType="textMultiLine"
+        android:gravity="top"
+        android:padding="8dp"/>
 </LinearLayout>
