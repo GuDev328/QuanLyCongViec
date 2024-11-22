@@ -1,12 +1,28 @@
 package com.example.quanlycongviec;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.quanlycongviec.CustomAdapter.NoteAdapter;
+import com.example.quanlycongviec.DAO.NoteDAO;
+import com.example.quanlycongviec.DTO.Note_DTO;
+import com.example.quanlycongviec.NoteAction.NoteActionAddActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -55,10 +71,48 @@ public class NoteFragment extends Fragment {
         }
     }
 
+    //Chạy lại khi đóng activity khác
+    ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        getDataNote();
+                    }
+                }
+            });
+
+    private RecyclerView recyclerView;
+    private NoteAdapter noteAdapter;
+    private ArrayList<Note_DTO> noteList = null;
+    private NoteDAO noteDao;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_note, container, false);
+        View view = inflater.inflate(R.layout.fragment_note, container, false);
+        noteDao = new NoteDAO(getActivity());
+        recyclerView = view.findViewById(R.id.recyclerView);
+        StaggeredGridLayoutManager staggeredGridLayoutManager =
+                new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(staggeredGridLayoutManager);
+        FloatingActionButton fabAdd = view.findViewById(R.id.fabAddNote);
+        fabAdd.setOnClickListener(v -> {
+            //Chuyển sang màn hình thêm mới
+            Intent intent = new Intent(getContext(), NoteActionAddActivity.class);
+            activityResultLauncher.launch(intent);
+        });
+        getDataNote();
+        return view;
     }
+
+    public void getDataNote() {
+        noteList = noteDao.getAll();
+        noteAdapter = new NoteAdapter(noteList, getContext(), noteDao, activityResultLauncher);
+        recyclerView.setAdapter(noteAdapter);
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+    }
+
 }
