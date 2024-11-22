@@ -13,26 +13,29 @@
         android:layout_height="wrap_content">
 
         <!-- Tiêu đề -->
-        <TextView
-            android:id="@+id/txtTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="Tiêu đề"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-        <!-- Nội dung -->
-        <TextView
-            android:id="@+id/txtContent"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="34dp"
-            android:gravity="start"
-            android:paddingLeft="8dp"
-            android:paddingBottom="8dp"
-            android:text="Sample Content"
-            android:textSize="16sp" />
-
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/txtTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="Tiêu đề"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+            <!-- Nội dung -->
+            <TextView
+                android:id="@+id/txtContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:paddingLeft="8dp"
+                android:paddingBottom="8dp"
+                android:text="Sample Content"
+                android:textSize="16sp" />
+        </LinearLayout>
         <!-- Dấu tích -->
         <ImageButton
             android:id="@+id/iconCheck"
