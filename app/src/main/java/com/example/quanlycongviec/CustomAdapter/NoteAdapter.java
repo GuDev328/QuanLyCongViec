@@ -75,6 +75,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     @Override
     public NoteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.note_item, parent, false);
+
         return new NoteViewHolder(view);
     }
 
@@ -214,6 +215,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
+                    Toast.makeText(view.getContext(), "s", Toast.LENGTH_SHORT).show();
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
                         toggleItemSelection(position); // Đổi trạng thái hiển thị của nút check
@@ -232,8 +234,8 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
                                     txtSearch.setVisibility(View.GONE); // Ẩn EditText
                                 }
                                 if (!hasSelectedItems()) {
+                                    txtSearch.setVisibility(View.VISIBLE); // Ẩn EditText
                                     toolbar.setVisibility(View.GONE);
-                                    txtSearch.setVisibility(View.VISIBLE);
                                 }
                             }
                         }

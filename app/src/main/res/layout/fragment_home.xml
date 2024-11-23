@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".HomeFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -50,12 +51,23 @@
             android:layout_weight="2" />
     </LinearLayout>
 
-    <Button
+<!--    <Button-->
+<!--        android:id="@+id/btnTaskAdd"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="bottom|end"-->
+<!--        android:layout_margin="16dp"-->
+<!--        android:textSize="30sp"-->
+<!--        android:text="+" />-->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnTaskAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:textSize="30sp"
-        android:text="+" />
+        android:backgroundTint="#76D1FE"
+        android:layout_gravity="bottom|end"
+        android:contentDescription="Add Item"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/baseline_add_24" />
 </FrameLayout>
