@@ -4,5 +4,10 @@
     <color name="white">#FFFFFFFF</color>
     <color name="teal_2">#03DAC5</color>
     <color name="selected_color">#B1FFED</color>
+    <color name="background_color">#FFFFFF</color>
+
     <color name="gray">#E0E0E0</color>
+    <color name="colorPrimary">#3C83D7</color>
+    <color name="colorPrimaryVariant">#367ED3</color>
+    <color name="colorAccent">#4D95EB</color>
 </resources>
