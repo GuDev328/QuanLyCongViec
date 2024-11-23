@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +33,7 @@ import com.example.quanlycongviec.NoteFragment;
 import com.example.quanlycongviec.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder> {
     private ArrayList<Note_DTO> noteList;
@@ -47,9 +49,8 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
 
     private NoteFragment noteFragment; // Thêm biến NoteFragment
 
-
     public NoteAdapter(ArrayList<Note_DTO> noteList, Context context, NoteDAO noteDAO,
-                       ActivityResultLauncher<Intent> activityResultLauncher, NoteFragment noteFragment) {
+                       ActivityResultLauncher<Intent> activityResultLauncher, NoteFragment noteFragmen) {
         this.noteList = noteList;
         this.context = context;
         this.noteDAO = noteDAO;
@@ -71,7 +72,6 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         notifyDataSetChanged(); // Cập nhật RecyclerView
     }
 
-
     @Override
     public NoteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.note_item, parent, false);
@@ -87,6 +87,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         // Cập nhật trạng thái hiển thị của nút tích và màu nền
         if (checkVisibility.get(position)) {
             holder.checkButton.setVisibility(View.VISIBLE);
+            //holder.itemView.setBackgroundColor(Color.parseColor("#000"));
             holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.teal_2)); // Đổi màu
             startShaking(holder.cardView, position); // Bắt đầu rung
         } else {
@@ -109,19 +110,6 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     public void toggleItemSelection(int position) {
         checkVisibility.set(position, !checkVisibility.get(position)); // Chuyển đổi trạng thái chọn
         notifyItemChanged(position); // Cập nhật lại item
-
-        // Kiểm tra nếu không còn item nào được chọn
-//        boolean anyItemSelected = false;
-//        for (Boolean isChecked : checkVisibility) {
-//            if (isChecked) {
-//                anyItemSelected = true;
-//                break;
-//            }
-//        }
-//
-//        if (!anyItemSelected && noteFragment != null) {
-//            noteFragment.onItemUnselected(); // Gọi phương thức trong Fragment để ẩn toolbar và hiện lại EditText
-//        }
     }
 
     // Lấy danh sách các ghi chú được chọn
@@ -145,6 +133,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         }
         notifyDataSetChanged(); // Cập nhật lại RecyclerView
     }
+
     // Xóa chế độ chọn nhiều
     public void clearSelection() {
         for (int i = 0; i < checkVisibility.size(); i++) {
@@ -154,6 +143,14 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         notifyDataSetChanged();
     }
 
+    // Chọn tất cả các ghi chú
+    public void selectAll() {
+        for (int i = 0; i < checkVisibility.size(); i++) {
+            checkVisibility.set(i, true); // Hiển thị icon check
+            isShaking.set(i, true); // Bắt đầu hiệu ứng rung
+        }
+        notifyDataSetChanged(); // Cập nhật RecyclerView
+    }
 
     // Kiểm tra xem có item nào được chọn hay không
     public boolean hasSelectedItems() {
@@ -229,12 +226,14 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
 
                             if (fragment != null && fragment.isAdded()) {
                                 Toolbar toolbar = fragment.getView().findViewById(R.id.toolbarNote);
-                                if (toolbar != null) {
-                                    toolbar.setVisibility(View.VISIBLE); // Hiển thị toolbar
-                                }
                                 EditText txtSearch = fragment.getView().findViewById(R.id.txtSearch);
-                                if (txtSearch != null) {
+                                if (hasSelectedItems()) {
+                                    toolbar.setVisibility(View.VISIBLE); // Hiển thị toolbar
                                     txtSearch.setVisibility(View.GONE); // Ẩn EditText
+                                }
+                                if (!hasSelectedItems()) {
+                                    toolbar.setVisibility(View.GONE);
+                                    txtSearch.setVisibility(View.VISIBLE);
                                 }
                             }
                         }

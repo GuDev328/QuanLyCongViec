@@ -33,6 +33,7 @@ import com.example.quanlycongviec.NoteAction.NoteActionAddActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -102,8 +103,6 @@ public class NoteFragment extends Fragment {
     private EditText txtSearch;
     private Toolbar toolbar;
 
-    private ArrayList<Boolean> selectedItems; // Danh sách các item được chọn
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -129,8 +128,6 @@ public class NoteFragment extends Fragment {
             activityResultLauncher.launch(intent);
         });
 
-        selectedItems = new ArrayList<>(); // Khởi tạo danh sách các item được chọn
-
         // Lắng nghe sự thay đổi trong EditText để lọc dữ liệu
         txtSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -149,22 +146,6 @@ public class NoteFragment extends Fragment {
 
         getDataNote();
 
-        // Để khi có item được chọn thì toolbar sẽ xuất hiện
-        recyclerView.setOnLongClickListener(v -> {
-            int position = recyclerView.getChildAdapterPosition(v);
-            noteAdapter.toggleItemSelection(position); // Chuyển trạng thái của item
-
-            // Kiểm tra xem còn item nào được chọn hay không
-            if (noteAdapter.hasSelectedItems()) {
-                toolbar.setVisibility(View.VISIBLE); // Hiển thị toolbar khi có item được chọn
-                txtSearch.setVisibility(View.GONE); // Ẩn txtSearch khi có item được chọn
-            } else {
-                toolbar.setVisibility(View.GONE); // Ẩn toolbar khi không còn item nào được chọn
-                txtSearch.setVisibility(View.VISIBLE); // Hiển thị lại txtSearch
-            }
-            return true; // Xử lý nhấn lâu
-        });
-
         return view;
     }
 
@@ -179,7 +160,6 @@ public class NoteFragment extends Fragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.menu_note_delete, menu);
         super.onCreateOptionsMenu(menu, inflater);
-
     }
 
     @Override
@@ -187,20 +167,24 @@ public class NoteFragment extends Fragment {
         int id = item.getItemId();
         if (id == R.id.checkall_option) {
             // Xử lý khi người dùng chọn "Check All"
-            selectAllNotes();
+            noteAdapter.selectAll();
+            updateToolbarIcons();
             return true;
-        } else if (id == R.id.delete_option) {
+        } else if (id == R.id.uncheckall_option) {
+            noteAdapter.clearSelection();
+            updateToolbarIcons();
+            toolbar.setVisibility(View.GONE);
+            txtSearch.setVisibility(View.VISIBLE);
+            return true;
+        }else if (id == R.id.delete_option) {
             deleteSelectedNotes();
-            return true;
-
-        } else if (id == R.id.complete_option) {
-            completeSelectedNotes();
             return true;
         } else
             return super.onOptionsItemSelected(item);
     }
 
     private void completeSelectedNotes() {
+
     }
 
     private void deleteSelectedNotes() {
@@ -220,8 +204,14 @@ public class NoteFragment extends Fragment {
 
     }
 
-    private void selectAllNotes() {
+    private void updateToolbarIcons() {
+        MenuItem checkAllItem = toolbar.getMenu().findItem(R.id.checkall_option);
+        MenuItem uncheckAllItem = toolbar.getMenu().findItem(R.id.uncheckall_option);
 
+        boolean allSelected = noteAdapter.hasSelectedItems() && noteAdapter.getSelectedNotes().size() == noteAdapter.getItemCount();
+
+        checkAllItem.setVisible(!allSelected); // Ẩn nếu đã chọn tất cả
+        uncheckAllItem.setVisible(allSelected); // Hiện nếu đã chọn tất cả
     }
 
     // Xử lý khi chế độ chọn kết thúc
@@ -229,12 +219,6 @@ public class NoteFragment extends Fragment {
         toolbar.setVisibility(View.GONE); // Ẩn toolbar
         txtSearch.setVisibility(View.VISIBLE); // Hiện lại EditText
         noteAdapter.clearSelection(); // Xóa trạng thái chọn
-    }
-
-    // Cập nhật trạng thái khi bỏ chọn item
-    public void onItemUnselected() {
-        toolbar.setVisibility(View.GONE); // Ẩn toolbar
-        txtSearch.setVisibility(View.VISIBLE); // Hiện lại EditText
     }
 
     // Lọc dữ liệu dựa trên từ khóa tìm kiếm

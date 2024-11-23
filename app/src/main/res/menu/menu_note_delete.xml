@@ -3,18 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/checkall_option"
-        android:icon="@drawable/baseline_checklist_24"
-        android:title="Chọn tất cả"
-        app:showAsAction="ifRoom"/>
+        android:icon="@drawable/baseline_done_all_24"
+        android:title="Chọn tất cả"/>
+    <item
+        android:id="@+id/uncheckall_option"
+        android:icon="@drawable/baseline_remove_done_24"
+        android:title="Bỏ chọn tất cả"/>
+
     <item
         android:id="@+id/delete_option"
         android:icon="@drawable/delete"
         android:title="Xóa tất cả"
-        app:showAsAction="ifRoom"/>
-
-    <item
-        android:id="@+id/complete_option"
-        android:icon="@drawable/baseline_check_24"
-        android:title="Hoàn thành"
         app:showAsAction="ifRoom"/>
 </menu>
