@@ -16,15 +16,15 @@
             android:id="@+id/toolbarNote"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/teal_2"
-            android:visibility="gone"> <!-- Ẩn toolbar ban đầu -->
+            android:visibility="gone"
+            android:background="@color/white"> <!-- Ẩn toolbar ban đầu -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Select Notes"
-                android:gravity="center"
-                android:textSize="18sp"
-                android:textColor="#ffffff" />
+                android:text="Chọn các ghi chú"
+                android:gravity="start"
+                android:textSize="25sp"
+                android:textStyle="bold"/>
         </androidx.appcompat.widget.Toolbar>
         <TableRow
             android:layout_width="match_parent"
