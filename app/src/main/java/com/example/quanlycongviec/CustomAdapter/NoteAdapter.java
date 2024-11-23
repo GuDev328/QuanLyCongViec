@@ -75,6 +75,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     @Override
     public NoteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.note_item, parent, false);
+
         return new NoteViewHolder(view);
     }
 
@@ -186,6 +187,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
+                    Toast.makeText(view.getContext(), "s", Toast.LENGTH_SHORT).show();
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
                         toggleItemSelection(position); // Đổi trạng thái hiển thị của nút check
@@ -198,12 +200,16 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
 
                             if (fragment != null && fragment.isAdded()) {
                                 Toolbar toolbar = fragment.getView().findViewById(R.id.toolbarNote);
-                                if (toolbar != null) {
-                                    toolbar.setVisibility(View.VISIBLE); // Hiển thị toolbar
-                                }
                                 EditText txtSearch = fragment.getView().findViewById(R.id.txtSearch);
-                                if (txtSearch != null) {
-                                    txtSearch.setVisibility(View.GONE); // Ẩn EditText
+                                if (hasSelectedItems()) {
+                                    toolbar.setVisibility(View.VISIBLE);
+                                    txtSearch.setVisibility(View.GONE);// Hiển thị toolbar
+                                }
+
+
+                                if (!hasSelectedItems()) {
+                                    txtSearch.setVisibility(View.VISIBLE); // Ẩn EditText
+                                    toolbar.setVisibility(View.GONE);
                                 }
                             }
                         }
