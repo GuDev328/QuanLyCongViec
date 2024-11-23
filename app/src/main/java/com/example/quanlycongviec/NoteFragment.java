@@ -183,9 +183,6 @@ public class NoteFragment extends Fragment {
             return super.onOptionsItemSelected(item);
     }
 
-    private void completeSelectedNotes() {
-
-    }
 
     private void deleteSelectedNotes() {
         Common.showConfirmDialog(getActivity(), "Xoá ghi chú", "Bạn có chắc chắn muốn xóa các ghi chú đã chọn?", new Runnable() {
