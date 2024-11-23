@@ -111,18 +111,49 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         notifyItemChanged(position); // Cập nhật lại item
 
         // Kiểm tra nếu không còn item nào được chọn
-        boolean anyItemSelected = false;
-        for (Boolean isChecked : checkVisibility) {
-            if (isChecked) {
-                anyItemSelected = true;
-                break;
+//        boolean anyItemSelected = false;
+//        for (Boolean isChecked : checkVisibility) {
+//            if (isChecked) {
+//                anyItemSelected = true;
+//                break;
+//            }
+//        }
+//
+//        if (!anyItemSelected && noteFragment != null) {
+//            noteFragment.onItemUnselected(); // Gọi phương thức trong Fragment để ẩn toolbar và hiện lại EditText
+//        }
+    }
+
+    // Lấy danh sách các ghi chú được chọn
+    public ArrayList<Note_DTO> getSelectedNotes() {
+        ArrayList<Note_DTO> selectedNotes = new ArrayList<>();
+        for (int i = 0; i < noteList.size(); i++) {
+            if (checkVisibility.get(i)) { // Kiểm tra item có được chọn
+                selectedNotes.add(noteList.get(i));
             }
         }
-
-        if (!anyItemSelected && noteFragment != null) {
-            noteFragment.onItemUnselected(); // Gọi phương thức trong Fragment để ẩn toolbar và hiện lại EditText
-        }
+        return selectedNotes;
     }
+
+    // Xóa các ghi chú được chọn
+    public void deleteSelectedNotes() {
+        ArrayList<Note_DTO> selectedNotes = getSelectedNotes();
+        noteList.removeAll(selectedNotes); // Xóa khỏi danh sách
+        for (int i = 0; i < selectedNotes.size(); i++) {
+            checkVisibility.remove(0); // Cập nhật trạng thái
+            isShaking.remove(0); // Cập nhật trạng thái
+        }
+        notifyDataSetChanged(); // Cập nhật lại RecyclerView
+    }
+    // Xóa chế độ chọn nhiều
+    public void clearSelection() {
+        for (int i = 0; i < checkVisibility.size(); i++) {
+            checkVisibility.set(i, false);
+            isShaking.set(i, false);
+        }
+        notifyDataSetChanged();
+    }
+
 
     // Kiểm tra xem có item nào được chọn hay không
     public boolean hasSelectedItems() {
