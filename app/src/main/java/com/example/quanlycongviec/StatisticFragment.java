@@ -94,7 +94,7 @@ public class StatisticFragment extends Fragment {
         dbHelper = new DBHelper(getContext());
 //        createBarChart(null,null);
         createBarChart(null,null);
-        createPieChart(null,null);
+        createPieChart();
         // Fetch task data
         loadStatisticsData(null, null);
 
@@ -190,7 +190,6 @@ public class StatisticFragment extends Fragment {
                     txtStart.setText(startDateString);
                     txtFinish.setText(finishDateString);
                     createBarChart(startDateString,finishDateString);
-//                    createPieChart(startDateString,finishDateString);
 
                 } else {
                     Toast.makeText(getContext(),"Invalid period",Toast.LENGTH_LONG).show();
@@ -203,81 +202,114 @@ public class StatisticFragment extends Fragment {
         startDatePickerDialog.show();
     }
 
-    public void createBarChart(String startDateString,String finishDateString) {
-        ArrayList<BarEntry> entries = new ArrayList<>();
-        ArrayList<BarEntry> barEntries = dbHelper.getTaskCountByDate();
-        // Tạo dữ liệu biểu đồ
-        BarDataSet barDataSet = new BarDataSet(barEntries, "Số lượng nhiệm vụ");
-        barDataSet.setColor(Color.BLUE); // Màu cột
-        BarData barData = new BarData(barDataSet);
-        barDataSet.setValueTextColor(Color.WHITE);
+    public void createBarChart(String startDateString, String finishDateString) {
+        ArrayList<BarEntry> barEntriesCompleted = dbHelper.getTaskCompleteCountByDate();
+        ArrayList<BarEntry> barEntriesPending = dbHelper.getTaskPendingCountByDate();
+
+        // Tạo BarDataSet cho dữ liệu nhiệm vụ
+        BarDataSet barDataSetCompleted = new BarDataSet(barEntriesCompleted, "Nhiệm vụ đã hoàn thành");
+        barDataSetCompleted.setColor(Color.BLUE); // Màu cột hoàn thành
+
+        BarDataSet barDataSetPending = new BarDataSet(barEntriesPending, "Nhiệm vụ chưa hoàn thành");
+        barDataSetPending.setColor(Color.GREEN); // Màu cột chưa hoàn thành
+
+        // Tạo dữ liệu BarData
+        BarData barData = new BarData(barDataSetCompleted, barDataSetPending);
+        barData.setBarWidth(0.3f); // Độ rộng mỗi cột
+
         // Gắn dữ liệu vào BarChart
         barChart.setData(barData);
 
-
         // Tùy chỉnh trục X
         XAxis xAxis = barChart.getXAxis();
-        xAxis.setGranularity(1f);
-        xAxis.setGranularityEnabled(true);
+        xAxis.setAxisMinimum(-0.5f);
+        ArrayList<String> dates = dbHelper.getTaskDates(); // Lấy danh sách ngày
+        xAxis.setValueFormatter(new DateAxisFormatter(dates)); // Đặt formatter cho trục X
+        xAxis.setGranularity(1f); // Bước nhảy trục X
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setTextColor(Color.WHITE);
-        ArrayList<String> dates = dbHelper.getTaskDates();
-        xAxis.setValueFormatter(new DateAxisFormatter(dates));
+        xAxis.setCenterAxisLabels(false);
 
+        xAxis.setTextColor(Color.WHITE);
+        barDataSetCompleted.setValueTextColor(Color.WHITE);
+        barDataSetPending.setValueTextColor(Color.WHITE);
+        int numGroups = dates.size();
+
+        // Nhóm các cột lại theo ngày
+        barChart.getXAxis().setAxisMinimum(-0.25f); // Đảm bảo không bị lệch khỏi trục
+        float groupSpace = 0.2f; // Khoảng cách giữa các nhóm cột
+        float barSpace = 0.05f; // Khoảng cách giữa các cột trong 1 nhóm
+        float barWidth = 0.3f; // Độ rộng mỗi cột (phải khớp với barData.setBarWidth)
+
+
+
+        // Đảm bảo khoảng cách tổng = 1 (groupSpace + 2 * barWidth + barSpace = 1)
+        barData.setBarWidth(barWidth);
+        barChart.groupBars(0f, groupSpace, barSpace);
+
+        // Tùy chỉnh trục Y
         barChart.getAxisRight().setEnabled(false); // Vô hiệu hóa trục bên phải
         YAxis leftAxis = barChart.getAxisLeft();
         leftAxis.setGranularity(1f);
         leftAxis.setAxisMinimum(0f);
         leftAxis.setTextColor(Color.WHITE);
-        leftAxis.setAxisMaximum(barChart.getYMax());
 
+        // Tùy chỉnh khác
         barChart.getDescription().setEnabled(false); // Tắt phần mô tả góc dưới bên phải (nếu có)
-        barChart.getLegend().setTextColor(Color.WHITE);
+        barChart.getLegend().setTextColor(Color.WHITE); // Màu chữ của chú thích (legend)
+        barChart.setFitBars(true); // Tự động căn chỉnh các cột trong biểu đồ
+
         // Làm mới biểu đồ
         barChart.invalidate();
     }
 
-    private void createPieChart(String startDateString,String finishDateString) {
+
+    private void createPieChart() {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String completedQuery = "SELECT COUNT(*) FROM Task WHERE status = 1";
-        String pendingQuery = "SELECT COUNT(*) FROM Task WHERE status = 0";
 
-        // Thêm điều kiện ngày nếu cần
-        if (startDateString != null && finishDateString != null) {
-            completedQuery += " AND created_date BETWEEN ? AND ?";
-            pendingQuery += " AND created_date BETWEEN ? AND ?";
-        }
+        // Truy vấn để lấy số nhiệm vụ theo danh mục
+        String query = "SELECT c.name AS category_name, COUNT(t.id) AS task_count " +
+                "FROM Category c " +
+                "LEFT JOIN Task t ON c.id = t.category_id " +
+                "GROUP BY c.id " +
+                "ORDER BY c.name";
 
-        Cursor completedCursor = db.rawQuery(completedQuery, startDateString != null ? new String[]{startDateString, finishDateString} : null);
-        completedCursor.moveToFirst();
-        int completedCount = completedCursor.getInt(0);
-        completedCursor.close();
+        Cursor cursor = db.rawQuery(query, null);
 
-        Cursor pendingCursor = db.rawQuery(pendingQuery, startDateString != null ? new String[]{startDateString, finishDateString} : null);
-        pendingCursor.moveToFirst();
-        int pendingCount = pendingCursor.getInt(0);
-        pendingCursor.close();
-
-
+        // Danh sách các phần của biểu đồ
         List<PieEntry> entries = new ArrayList<>();
-        PieDataSet dataSet = new PieDataSet(entries, "");
-        entries.add(new PieEntry(completedCount, "Đã hoàn thành\t"));
-        entries.add(new PieEntry(pendingCount, "Chưa hoàn thành"));
 
-        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        while (cursor.moveToNext()) {
+            String categoryName = cursor.getString(0); // Tên danh mục
+            int taskCount = cursor.getInt(1);         // Số nhiệm vụ
+            entries.add(new PieEntry(taskCount, categoryName)); // Thêm mục vào biểu đồ
+        }
+        cursor.close();
 
-        pieChart.setHoleRadius(40f); // Bán kính lỗ bên trong (40% kích thước biểu đồ)
-        pieChart.setTransparentCircleRadius(45f); // Bán kính vòng tròn trong suốt bên ngoài lỗ
-        pieChart.setDrawHoleEnabled(true); // Bật chế độ hiển thị lỗ
-        pieChart.setEntryLabelColor(Color.WHITE); // Đổi màu nhãn (labels)
-        pieChart.setEntryLabelTextSize(12f); // Đổi kích thước chữ nhãn
+        // Tạo PieDataSet
+        PieDataSet dataSet = new PieDataSet(entries, "Danh mục nhiệm vụ");
+        dataSet.setColors(ColorTemplate.COLORFUL_COLORS); // Đặt màu sắc cho biểu đồ
+        dataSet.setValueTextSize(14f); // Kích thước văn bản
+        dataSet.setValueTextColor(Color.WHITE); // Màu sắc văn bản
 
-        pieChart.getDescription().setEnabled(false); // Tắt phần mô tả góc dưới bên phải (nếu có)
-        pieChart.getLegend().setTextColor(Color.WHITE);
+        // Tạo PieData từ PieDataSet
         PieData data = new PieData(dataSet);
+
+        // Cấu hình PieChart
         pieChart.setData(data);
-        pieChart.invalidate(); // Refresh biểu đồ
+        pieChart.setDrawHoleEnabled(true); // Hiển thị lỗ ở giữa biểu đồ
+        pieChart.setHoleRadius(40f); // Bán kính lỗ
+        pieChart.setTransparentCircleRadius(45f); // Bán kính vòng tròn trong suốt
+        pieChart.setEntryLabelColor(Color.WHITE); // Màu nhãn các phần
+        pieChart.setEntryLabelTextSize(12f); // Kích thước nhãn
+        pieChart.getDescription().setEnabled(false); // Tắt mô tả biểu đồ
+        pieChart.getLegend().setTextColor(Color.WHITE); // Đặt màu sắc cho chú thích
+        pieChart.animateY(1000); // Hiệu ứng hiển thị
+
+        // Làm mới biểu đồ
+        pieChart.invalidate();
     }
+
+
     public static String[] convertDates(List<String> dates) {
         SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat outputFormat = new SimpleDateFormat("dd-MM");
