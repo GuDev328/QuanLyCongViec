@@ -115,7 +115,6 @@
         android:text="Phân loai nhiệm vụ theo danh mục"
         app:layout_constraintTop_toBottomOf="@id/barChart"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/barChart"
         tools:ignore="MissingConstraints" />
     <!-- Biểu đồ tròn -->
     <com.github.mikephil.charting.charts.PieChart
