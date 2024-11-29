@@ -103,7 +103,7 @@ public class RegisterActivity extends AppCompatActivity {
                         edtName.getText().toString().trim(),
                         Common.getSelectedRadioButtonValue(groupGender),
                         btnBirthDay.getText().toString().trim(),
-                        ""
+                        null
                 );
                 long taskId = userDAO.insert(user);
                 Toast.makeText(RegisterActivity.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
