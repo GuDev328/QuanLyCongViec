@@ -109,9 +109,9 @@ public class StatisticFragment extends Fragment {
 
             try {
                 // Lấy dữ liệu theo khoảng ngày
-                ArrayList<BarEntry> barEntriesCompleted = dbHelper.getTaskCompleteCountByDateRange(startDate,endDate);
-                ArrayList<BarEntry> barEntriesPending = dbHelper.getTaskPendingCountByDateRange(startDate,endDate);
-                ArrayList<String> dates = dbHelper.getTaskDatesByRange(startDate, endDate);
+                ArrayList<BarEntry> barEntriesCompleted = statisticDAO.getTaskCompleteCountByDateRange(startDate,endDate);
+                ArrayList<BarEntry> barEntriesPending = statisticDAO.getTaskPendingCountByDateRange(startDate,endDate);
+                ArrayList<String> dates = statisticDAO.getTaskDatesByRange(startDate, endDate);
 
                 if (barEntriesCompleted.isEmpty() || barEntriesPending.isEmpty()) {
                     Toast.makeText(getContext(), "Không có dữ liệu trong khoảng ngày đã chọn", Toast.LENGTH_SHORT).show();
@@ -245,10 +245,10 @@ public class StatisticFragment extends Fragment {
     }
 
     public void createBarChart(String startDateString, String finishDateString) {
-//        ArrayList<BarEntry> barEntriesCompleted = dbHelper.getTaskCompleteCountByDateRange(startDateString,finishDateString);
-//        ArrayList<BarEntry> barEntriesPending = dbHelper.getTaskPendingCountByDateRange(startDateString,finishDateString);
-        ArrayList<BarEntry> barEntriesCompleted = dbHelper.getTaskCompleteCountByDate();
-        ArrayList<BarEntry> barEntriesPending = dbHelper.getTaskPendingCountByDate();
+//        ArrayList<BarEntry> barEntriesCompleted = statisticDAO.getTaskCompleteCountByDateRange(startDateString,finishDateString);
+//        ArrayList<BarEntry> barEntriesPending = statisticDAO.getTaskPendingCountByDateRange(startDateString,finishDateString);
+        ArrayList<BarEntry> barEntriesCompleted = statisticDAO.getTaskCompleteCountByDate();
+        ArrayList<BarEntry> barEntriesPending = statisticDAO.getTaskPendingCountByDate();
 
         // Tạo BarDataSet cho dữ liệu nhiệm vụ
         BarDataSet barDataSetCompleted = new BarDataSet(barEntriesCompleted, "Nhiệm vụ đã hoàn thành");
@@ -267,7 +267,7 @@ public class StatisticFragment extends Fragment {
         // Tùy chỉnh trục X
         XAxis xAxis = barChart.getXAxis();
         xAxis.setAxisMinimum(-0.5f);
-        ArrayList<String> dates = dbHelper.getTaskDates(); // Lấy danh sách ngày
+        ArrayList<String> dates = statisticDAO.getTaskDates(); // Lấy danh sách ngày
   //      ArrayList<String> dates = dbHelper.getTaskDatesByRange(startDateString,finishDateString); // Lấy danh sách ngày
 
         xAxis.setValueFormatter(new DateAxisFormatter(dates)); // Đặt formatter cho trục X
