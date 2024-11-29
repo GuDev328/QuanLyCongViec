@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         try {
             DBHelper dbHelper = new DBHelper(getApplicationContext());
             SQLiteDatabase db = dbHelper.getWritableDatabase();

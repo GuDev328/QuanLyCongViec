@@ -63,7 +63,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 "VALUES (1, 'Cá nhân', 'Cá nhân')");
         db.execSQL("INSERT INTO Category (user_id, name, description) " +
                 "VALUES (1, 'Công việc', 'Công việc')");
-        insertSampleData();
+
     }
 
     @Override
@@ -75,6 +75,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS Note");
         onCreate(db);
     }
+
     public void insertSampleData() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("INSERT INTO Task (date, status) VALUES ('2024-11-17', 1)");
@@ -84,6 +85,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO Task (date, status) VALUES ('2024-11-19', 0)");
     }
     public ArrayList<BarEntry> getTaskCompleteCountByDateRange(String startDate, String endDate) {
+
         ArrayList<BarEntry> barEntries = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
