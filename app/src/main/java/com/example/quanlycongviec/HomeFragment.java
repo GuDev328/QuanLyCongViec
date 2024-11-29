@@ -29,6 +29,7 @@ import com.example.quanlycongviec.DTO.Task_DTO;
 import com.example.quanlycongviec.TaskAction.TaskActionAdd;
 import com.example.quanlycongviec.TaskAction.TaskActionView;
 import com.example.quanlycongviec.TaskAction.TaskDoneView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -95,8 +96,8 @@ public class HomeFragment extends Fragment {
                     }
                 }
             });
-
-    Button btnAdd, btnPickDate;
+    FloatingActionButton btnAdd;
+    Button  btnPickDate;
     ListView listNotDone, listDone;
     TaskDAO taskDAO;
     ArrayList<Task_DTO> listNotDoneArr;
