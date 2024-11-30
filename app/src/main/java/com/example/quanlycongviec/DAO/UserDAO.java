@@ -28,7 +28,7 @@ public class UserDAO extends CRUD_DAO<User_DTO> {
         String name = cursor.getString(cursor.getColumnIndexOrThrow("name"));
         String gender = cursor.getString(cursor.getColumnIndexOrThrow("gender"));
         String birthday = cursor.getString(cursor.getColumnIndexOrThrow("birthday"));
-        String avatar = cursor.getString(cursor.getColumnIndexOrThrow("avatar"));
+        byte[] avatar = cursor.getBlob(cursor.getColumnIndexOrThrow("avatar"));
 
         return new User_DTO(id, email, password, name, gender, birthday, avatar);
     }

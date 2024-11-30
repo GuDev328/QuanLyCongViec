@@ -7,10 +7,10 @@ public class User_DTO {
     private String name;
     private String gender;
     private String birthday;
-    private String avatar;
+    private byte[] avatar;
 
     // Constructor
-    public User_DTO(long id, String email, String password, String name, String gender, String birthday, String avatar) {
+    public User_DTO(long id, String email, String password, String name, String gender, String birthday, byte[] avatar) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -39,6 +39,6 @@ public class User_DTO {
     public String getBirthday() { return birthday; }
     public void setBirthday(String birthday) { this.birthday = birthday; }
 
-    public String getAvatar() { return avatar; }
-    public void setAvatar(String avatar) { this.avatar = avatar; }
+    public byte[] getAvatar() { return avatar; }
+    public void setAvatar(byte[] avatar) { this.avatar = avatar; }
 }

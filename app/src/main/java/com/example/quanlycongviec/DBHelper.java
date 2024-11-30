@@ -30,7 +30,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 "name TEXT NOT NULL," +
                 "gender TEXT," +
                 "birthday TEXT," +
-                "avatar TEXT)");
+                "avatar BLOB)");
 
         db.execSQL("CREATE TABLE IF NOT EXISTS Category (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -57,13 +57,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 "title TEXT NOT NULL," +
                 "content TEXT," +
                 "FOREIGN KEY (user_id) REFERENCES User (id))");
-        db.execSQL("INSERT INTO Category (user_id, name, description) " +
-                "VALUES (1, 'Không có', 'Chưa chọn danh mục')");
-        db.execSQL("INSERT INTO Category (user_id, name, description) " +
-                "VALUES (1, 'Cá nhân', 'Cá nhân')");
-        db.execSQL("INSERT INTO Category (user_id, name, description) " +
-                "VALUES (1, 'Công việc', 'Công việc')");
-        insertSampleData();
+
     }
 
     @Override

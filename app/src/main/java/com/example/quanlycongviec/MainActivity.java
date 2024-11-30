@@ -1,6 +1,7 @@
 package com.example.quanlycongviec;
 
 import android.content.Context;
+import android.database.CursorWindow;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +16,7 @@ import com.example.quanlycongviec.DTO.Task_DTO;
 import com.example.quanlycongviec.databinding.ActivityMainBinding;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 //import com.example.quanlycongviec.databinding.ActivityMainBinding;
@@ -31,7 +33,13 @@ public class MainActivity extends AppCompatActivity {
         try {
             DBHelper dbHelper = new DBHelper(getApplicationContext());
             SQLiteDatabase db = dbHelper.getWritableDatabase();
-
+            try {
+                Field field = CursorWindow.class.getDeclaredField("sCursorWindowSize");
+                field.setAccessible(true);
+                field.set(null, 100 * 1024 * 1024); // 100MB
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 //            //Insert tạm 2 bản ghi
 //            TaskDAO taskDAOVIP = new TaskDAO(this);
 //            for(int i=0; i<2; i++){
