@@ -6,16 +6,19 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.quanlycongviec.DBHelper;
+import com.example.quanlycongviec.ShareStore;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class CRUD_DAO<T> {
     protected SQLiteDatabase db;
+    protected ShareStore store;
 
     public CRUD_DAO(Context context) {
         DBHelper dbHelper = new DBHelper(context);
         db = dbHelper.getWritableDatabase();
+        store = new ShareStore(context);
     }
 
     // Lấy tên bảng (phải được implement trong subclass)
@@ -39,7 +42,7 @@ public abstract class CRUD_DAO<T> {
     // Lấy tất cả các bản ghi
     public ArrayList<T> getAll() {
         ArrayList<T> list = new ArrayList<>();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + getTableName(), null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + getTableName()+ " WHERE user_id = ?", new String[]{store.getValue("user_id", null)});
 
         if (cursor != null && cursor.moveToFirst()) {
             do {

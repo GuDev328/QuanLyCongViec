@@ -1,6 +1,8 @@
 package com.example.quanlycongviec.Auth;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,9 +13,13 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.quanlycongviec.Common;
+import com.example.quanlycongviec.DAO.CategoryDAO;
 import com.example.quanlycongviec.DAO.UserDAO;
+import com.example.quanlycongviec.DTO.Category_DTO;
 import com.example.quanlycongviec.DTO.User_DTO;
 import com.example.quanlycongviec.R;
+
+import java.io.ByteArrayOutputStream;
 
 public class RegisterActivity extends AppCompatActivity {
     Button btnBackToLogin, btnBirthDay, btnDangKy;
@@ -103,12 +109,31 @@ public class RegisterActivity extends AppCompatActivity {
                         edtName.getText().toString().trim(),
                         Common.getSelectedRadioButtonValue(groupGender),
                         btnBirthDay.getText().toString().trim(),
-                        null
+                        getDefaultAvatar()
                 );
-                long taskId = userDAO.insert(user);
+                long userId = userDAO.insert(user);
+                if(userId==-1){
+                    Toast.makeText(RegisterActivity.this, "Đăng ký thất bại", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Category_DTO category0 = new Category_DTO(0, userId, "Không có", "Không có danh mục");
+                Category_DTO category1 = new Category_DTO(0, userId, "Cá nhân", "Danh mục cho công việc cá nhân");
+                Category_DTO category2 = new Category_DTO(0, userId, "Công việc", "Danh mục cho công việc");
+                CategoryDAO categoryDAO= new CategoryDAO(RegisterActivity.this);
+                categoryDAO.insert(category0);
+                categoryDAO.insert(category1);
+                categoryDAO.insert(category2);
+
                 Toast.makeText(RegisterActivity.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
             }
         });
 
+    }
+
+    private byte[] getDefaultAvatar() {
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.default_avatar); // Đổi `default_avatar` thành tên ảnh của bạn
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
     }
 }
