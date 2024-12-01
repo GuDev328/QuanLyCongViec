@@ -142,4 +142,18 @@ public class TaskDAO extends CRUD_DAO<Task_DTO> {
     public List<Task_DTO> getAllTasks() {
         return getTasks(null, null);
     }
+
+    public boolean hasTasksInCategory(long categoryId) {
+        String query = "SELECT COUNT(*) FROM " + getTableName() + " WHERE category_id = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(categoryId)});
+        boolean hasTasks = false;
+
+        if (cursor != null && cursor.moveToFirst()) {
+            hasTasks = cursor.getInt(0) > 0;
+            cursor.close();
+        }
+
+        return hasTasks;
+    }
+
 }

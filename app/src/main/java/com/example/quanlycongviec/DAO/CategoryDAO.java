@@ -17,6 +17,7 @@ public class CategoryDAO extends CRUD_DAO<Category_DTO> {
         return "Category";
     }
 
+
     @Override
     protected Category_DTO fromCursor(Cursor cursor) {
         long id = cursor.getLong(cursor.getColumnIndexOrThrow("id")); // Sử dụng getLong
