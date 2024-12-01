@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.quanlycongviec.Common;
 import com.example.quanlycongviec.DAO.CategoryDAO;
+import com.example.quanlycongviec.DAO.TaskDAO;
 import com.example.quanlycongviec.DTO.Category_DTO;
 import com.example.quanlycongviec.R;
 import com.example.quanlycongviec.TaskAction.TaskActionView;
@@ -89,18 +90,24 @@ public class CategoryView extends AppCompatActivity {
             btnDeleteCategory.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Common.showConfirmDialog(CategoryView.this, "Xoá danh mục",
-                            "Bạn có chắc chắn muốn xoá danh mục này?", new Runnable() {
-                                @Override
-                                public void run() {
-                                    categoryDAO.delete((int) categoryId);
-                                    Toast.makeText(CategoryView.this, "Đã xoá danh mục", Toast.LENGTH_SHORT).show();
-                                    setResult(RESULT_OK);
-                                    finish();
-                                }
-                            });
+                    TaskDAO taskDAO = new TaskDAO(getApplicationContext());
+                    if (taskDAO.hasTasksInCategory(categoryId)) {
+                        Toast.makeText(CategoryView.this, "Không thể xoá. Danh mục này vẫn còn công việc!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Common.showConfirmDialog(CategoryView.this, "Xoá danh mục",
+                                "Bạn có chắc chắn muốn xoá danh mục này?", new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        categoryDAO.delete((int) categoryId);
+                                        Toast.makeText(CategoryView.this, "Đã xoá danh mục", Toast.LENGTH_SHORT).show();
+                                        setResult(RESULT_OK);
+                                        finish();
+                                    }
+                                });
+                    }
                 }
             });
+
 
         } else {
             Toast.makeText(this, "Không tìm thấy thông tin danh mục!", Toast.LENGTH_SHORT).show();
