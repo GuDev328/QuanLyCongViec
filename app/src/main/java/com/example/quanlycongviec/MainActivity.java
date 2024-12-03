@@ -1,23 +1,23 @@
 package com.example.quanlycongviec;
 
-import android.content.Context;
 import android.database.CursorWindow;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.quanlycongviec.DAO.TaskDAO;
-import com.example.quanlycongviec.DTO.Task_DTO;
+import com.example.quanlycongviec.Activities.HomeFragment;
+import com.example.quanlycongviec.Activities.ListFragment;
+import com.example.quanlycongviec.Activities.NoteFragment;
+import com.example.quanlycongviec.Activities.ProfileFragment;
+import com.example.quanlycongviec.Activities.StatisticFragment;
+import com.example.quanlycongviec.DB.DBHelper;
 import com.example.quanlycongviec.databinding.ActivityMainBinding;
 
-import java.io.File;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 
 //import com.example.quanlycongviec.databinding.ActivityMainBinding;
 //import com.google.android.material.bottomnavigation.BottomNavigationView;

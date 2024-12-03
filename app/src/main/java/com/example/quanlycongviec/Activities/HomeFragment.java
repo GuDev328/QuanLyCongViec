@@ -1,7 +1,6 @@
-package com.example.quanlycongviec;
+package com.example.quanlycongviec.Activities;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -11,24 +10,21 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
+import com.example.quanlycongviec.Utils.Common;
 import com.example.quanlycongviec.CustomAdapter.TaskAdapter;
 import com.example.quanlycongviec.DAO.CategoryDAO;
 import com.example.quanlycongviec.DAO.TaskDAO;
 import com.example.quanlycongviec.DTO.Category_DTO;
 import com.example.quanlycongviec.DTO.Task_DTO;
+import com.example.quanlycongviec.R;
 import com.example.quanlycongviec.TaskAction.TaskActionAdd;
 import com.example.quanlycongviec.TaskAction.TaskActionView;
 import com.example.quanlycongviec.TaskAction.TaskDoneView;

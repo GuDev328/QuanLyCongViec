@@ -1,4 +1,4 @@
-package com.example.quanlycongviec;
+package com.example.quanlycongviec.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -20,16 +20,11 @@ import android.widget.ListView;
 import com.example.quanlycongviec.CategoryAction.CategoryAdd;
 import com.example.quanlycongviec.CategoryAction.CategoryView;
 import com.example.quanlycongviec.CustomAdapter.CategoryAdapter;
-import com.example.quanlycongviec.CustomAdapter.TaskAdapter;
 import com.example.quanlycongviec.DAO.CategoryDAO;
-import com.example.quanlycongviec.DAO.TaskDAO;
 import com.example.quanlycongviec.DTO.Category_DTO;
-import com.example.quanlycongviec.DTO.Task_DTO;
-import com.example.quanlycongviec.TaskAction.TaskActionAdd;
-import com.example.quanlycongviec.TaskAction.TaskActionView;
+import com.example.quanlycongviec.R;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * A simple {@link Fragment} subclass.

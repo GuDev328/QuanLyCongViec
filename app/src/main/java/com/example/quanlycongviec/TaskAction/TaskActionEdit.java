@@ -11,22 +11,17 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.quanlycongviec.Auth.LoginActivity;
-import com.example.quanlycongviec.Common;
+import com.example.quanlycongviec.Utils.Common;
 import com.example.quanlycongviec.DAO.CategoryDAO;
 import com.example.quanlycongviec.DAO.TaskDAO;
 import com.example.quanlycongviec.DTO.Category_DTO;
 import com.example.quanlycongviec.DTO.Task_DTO;
 import com.example.quanlycongviec.R;
-import com.example.quanlycongviec.ShareStore;
+import com.example.quanlycongviec.Utils.ShareStore;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class TaskActionEdit extends AppCompatActivity {
     Button btnPickDate, btnPickTime, btnCancel, btnConfirm;

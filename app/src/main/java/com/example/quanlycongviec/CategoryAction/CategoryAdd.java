@@ -8,14 +8,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.quanlycongviec.Auth.LoginActivity;
 import com.example.quanlycongviec.DAO.CategoryDAO;
 import com.example.quanlycongviec.DTO.Category_DTO;
 import com.example.quanlycongviec.R;
-import com.example.quanlycongviec.ShareStore;
+import com.example.quanlycongviec.Utils.ShareStore;
 
 public class CategoryAdd extends AppCompatActivity {
     EditText edtCategoryName, edtCategoryDescription;

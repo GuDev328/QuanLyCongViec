@@ -3,30 +3,23 @@ package com.example.quanlycongviec.TaskAction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.quanlycongviec.Auth.LoginActivity;
-import com.example.quanlycongviec.Common;
+import com.example.quanlycongviec.Utils.Common;
 import com.example.quanlycongviec.DAO.CategoryDAO;
 import com.example.quanlycongviec.DAO.TaskDAO;
 import com.example.quanlycongviec.DTO.Category_DTO;
 import com.example.quanlycongviec.DTO.Task_DTO;
-import com.example.quanlycongviec.MainActivity;
 import com.example.quanlycongviec.R;
-import com.example.quanlycongviec.ShareStore;
+import com.example.quanlycongviec.Utils.ShareStore;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

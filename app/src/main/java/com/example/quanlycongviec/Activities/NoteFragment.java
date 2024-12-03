@@ -1,4 +1,4 @@
-package com.example.quanlycongviec;
+package com.example.quanlycongviec.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -26,14 +26,15 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.quanlycongviec.Utils.Common;
 import com.example.quanlycongviec.CustomAdapter.NoteAdapter;
 import com.example.quanlycongviec.DAO.NoteDAO;
 import com.example.quanlycongviec.DTO.Note_DTO;
 import com.example.quanlycongviec.NoteAction.NoteActionAddActivity;
+import com.example.quanlycongviec.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
