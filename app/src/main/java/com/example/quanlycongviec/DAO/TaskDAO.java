@@ -64,15 +64,21 @@ public class TaskDAO extends CRUD_DAO<Task_DTO> {
         return values;
     }
 
-    public ArrayList<Task_DTO> getListNotDone(String date){
+    public ArrayList<Task_DTO> getListNotDone(String date, long category_id){
         SQLiteDatabase db = this.getDBInstance();
         ArrayList<Task_DTO> list = new ArrayList<>();
         // Cập nhật câu truy vấn để lọc theo date và status = 0
         String query = "SELECT * FROM " + getTableName() +
                 " WHERE date = ? AND status = 0 AND user_id = ?";
-
+        if(category_id != -1){
+            query += " AND category_id = ?";
+        }
         // Chạy truy vấn với tham số là ngày
-        Cursor cursor = db.rawQuery(query, new String[]{date, String.valueOf(user_id)});
+        String[] selectionArgs= new String[]{date, String.valueOf(user_id)};
+        if (category_id!=-1){
+            selectionArgs= new String[]{date, String.valueOf(user_id), String.valueOf(category_id)};
+        }
+        Cursor cursor = db.rawQuery(query, selectionArgs);
 
         if (cursor != null && cursor.moveToFirst()) {
             do {
@@ -83,15 +89,21 @@ public class TaskDAO extends CRUD_DAO<Task_DTO> {
         return list;
 
     }
-    public ArrayList<Task_DTO> getListDone(String date){
+    public ArrayList<Task_DTO> getListDone(String date, long category_id){
         SQLiteDatabase db = this.getDBInstance();
         ArrayList<Task_DTO> list = new ArrayList<>();
         // Cập nhật câu truy vấn để lọc theo date và status = 0
         String query = "SELECT * FROM " + getTableName() +
                 " WHERE date = ? AND status = 1 AND user_id = ?";
-
+        if (category_id!=-1){
+            query += " AND category_id = ?";
+        }
         // Chạy truy vấn với tham số là ngày
-        Cursor cursor = db.rawQuery(query, new String[]{date, String.valueOf(user_id)});
+        String[] selectionArgs= new String[]{date, String.valueOf(user_id)};
+        if (category_id!=-1){
+            selectionArgs= new String[]{date, String.valueOf(user_id), String.valueOf(category_id)};
+        }
+        Cursor cursor = db.rawQuery(query, selectionArgs);
 
         if (cursor != null && cursor.moveToFirst()) {
             do {

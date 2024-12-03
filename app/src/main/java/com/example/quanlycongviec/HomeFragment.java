@@ -21,10 +21,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.quanlycongviec.CustomAdapter.TaskAdapter;
+import com.example.quanlycongviec.DAO.CategoryDAO;
 import com.example.quanlycongviec.DAO.TaskDAO;
+import com.example.quanlycongviec.DTO.Category_DTO;
 import com.example.quanlycongviec.DTO.Task_DTO;
 import com.example.quanlycongviec.TaskAction.TaskActionAdd;
 import com.example.quanlycongviec.TaskAction.TaskActionView;
@@ -102,6 +105,8 @@ public class HomeFragment extends Fragment {
     TaskDAO taskDAO;
     ArrayList<Task_DTO> listNotDoneArr;
     ArrayList<Task_DTO> listDoneArr;
+    CategoryDAO categoryDAO;
+    Spinner spinnerCate;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -111,6 +116,28 @@ public class HomeFragment extends Fragment {
         listDone = view.findViewById(R.id.listDone);
         btnPickDate = view.findViewById(R.id.btnPickDate);
         btnAdd= view.findViewById(R.id.btnTaskAdd);
+        categoryDAO= new CategoryDAO(getActivity());
+        spinnerCate= view.findViewById(R.id.spinnerCate);
+        ArrayList<Category_DTO> cates = categoryDAO.getAll();
+        ArrayList<String> spinnerData = new ArrayList<>();
+        spinnerData.add("Tất cả");
+        for (Category_DTO cate :
+                cates) {
+            spinnerData.add(cate.getName());
+        }
+        Common.setAdapterSpinner(getActivity(), spinnerCate, spinnerData);
+
+        spinnerCate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                getDataTask();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -177,13 +204,29 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+
+    public long getCategoryID(){
+        String name = spinnerCate.getSelectedItem().toString().trim();
+        if(name.equals("Tất cả")){
+            return -1;
+        }
+        ArrayList<Category_DTO> cates = categoryDAO.getAll();
+
+        for (Category_DTO category : cates) {
+            if (category.getName().equals(name)) {
+                return category.getId();  // Trả về đối tượng tìm được
+            }
+        }
+        return -1;
+    }
+
     public void getDataTask(){
-        listNotDoneArr= taskDAO.getListNotDone(btnPickDate.getText().toString());
+        listNotDoneArr= taskDAO.getListNotDone(btnPickDate.getText().toString(), getCategoryID());
         Collections.reverse(listNotDoneArr);
         TaskAdapter adapter = new TaskAdapter(getActivity(), R.layout.listview_list_task_not_done, listNotDoneArr);
         listNotDone.setAdapter(adapter);
 
-        listDoneArr= taskDAO.getListDone(btnPickDate.getText().toString());
+        listDoneArr= taskDAO.getListDone(btnPickDate.getText().toString(), getCategoryID());
         Collections.reverse(listDoneArr);
         TaskAdapter adapter2 = new TaskAdapter(getActivity(), R.layout.listview_list_task_not_done, listDoneArr);
         listDone.setAdapter(adapter2);

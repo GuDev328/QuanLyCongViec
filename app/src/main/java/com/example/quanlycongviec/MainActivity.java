@@ -40,28 +40,6 @@ public class MainActivity extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-//            //Insert tạm 2 bản ghi
-//            TaskDAO taskDAOVIP = new TaskDAO(this);
-//            for(int i=0; i<2; i++){
-//                Task_DTO newTask = new Task_DTO(0, 1, 1, "2024-11-15", "10:00", "Học lập trình", "Hoàn thành bài tập", 0);
-//                long taskId = taskDAOVIP.insert(newTask);
-//            }
-//
-//            //Get ALL
-//            String a="";
-//            ArrayList<Task_DTO> tasks = taskDAOVIP.getAll();
-//            for (Task_DTO task : tasks) {
-//                a+=("Task: "+ "ID: " + task.getId() + ", Title: " + task.getTitle())+"\n";
-//            }
-//            Common.showAlertDialog(MainActivity.this, "Demo", a);
-//
-//            //Update
-//            taskDAOVIP.update(1, new Task_DTO( 1, 1, 1, "2024-11-15", "10:30", "Học SQLite", "Thực hành CRUD", 1));
-//
-//            //Delete
-//            taskDAOVIP.delete(2);
-
-
 
         }
         catch (Exception e){
