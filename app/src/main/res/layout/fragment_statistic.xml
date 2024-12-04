@@ -71,7 +71,7 @@
 
         <TextView
             android:id="@+id/txtStart"
-            android:layout_width="78dp"
+            android:layout_width="85dp"
             android:layout_height="wrap_content"
             android:text="" />
 
@@ -83,15 +83,17 @@
 
         <TextView
             android:id="@+id/txtFinish"
-            android:layout_width="78dp"
+            android:layout_width="85dp"
             android:layout_height="wrap_content"
             android:text="" />
         <ImageButton android:id="@+id/showDatePicker" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/baseline_date_range_24"/>
+
         <Button
             android:id="@+id/btnFilter"
-            android:layout_width="wrap_content"
+            android:layout_width="75dp"
             android:layout_height="wrap_content"
-            android:text="Lọc" />
+            android:drawableRight="@drawable/baseline_filter_list_alt_24"
+            android:gravity="center" />
     </TableRow>
 
     <!-- Biểu đồ cột -->

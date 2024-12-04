@@ -21,6 +21,7 @@ import com.example.quanlycongviec.DB.DBHelper;
 import com.example.quanlycongviec.R;
 import com.example.quanlycongviec.StatisticAction.DateAxisFormatter;
 import com.example.quanlycongviec.StatisticAction.StatisticDAO;
+import com.example.quanlycongviec.Utils.ShareStore;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -47,6 +48,8 @@ public class StatisticFragment extends Fragment {
     ImageButton btnShowDatePicker;
     private TextView tvCompletedTasks, tvPendingTasks,txtStart,txtFinish;
     private DBHelper dbHelper;
+    private int user_id;
+    private ShareStore store ;
 
     private StatisticDAO statisticDAO ;
     private TaskDAO taskDAO;
@@ -75,6 +78,8 @@ public class StatisticFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_statistic, container, false);
         statisticDAO = new StatisticDAO(getContext());
         taskDAO = new TaskDAO(getContext());
+        store= new ShareStore(getContext());
+        user_id =Integer.parseInt(store.getValue("user_id", null));
         Button btnFilter = view.findViewById(R.id.btnFilter);
         // Initialize the views
         tvCompletedTasks = view.findViewById(R.id.tvCompletedTasks);
@@ -86,7 +91,6 @@ public class StatisticFragment extends Fragment {
         pieChart = view.findViewById(R.id.pieChart);
         // Initialize the database helper
         dbHelper = new DBHelper(getContext());
-//        createBarChart(null,null);
         createBarChart(null,null);
         createPieChart();
         // Fetch task data
@@ -220,7 +224,7 @@ public class StatisticFragment extends Fragment {
                 endDateCalendar.set(year2, month2, dayOfMonth2);
 
                 if (endDateCalendar.getTimeInMillis() >= startDateCalendar.getTimeInMillis()) {
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                     String startDateString = dateFormat.format(startDateCalendar.getTime());
                     String finishDateString = dateFormat.format(endDateCalendar.getTime());
                     txtStart.setText(startDateString);
@@ -303,24 +307,7 @@ public class StatisticFragment extends Fragment {
     private void createPieChart() {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        // Truy vấn để lấy số nhiệm vụ theo danh mục
-        String query = "SELECT c.name AS category_name, COUNT(t.id) AS task_count " +
-                "FROM Category c " +
-                "LEFT JOIN Task t ON c.id = t.category_id " +
-                "GROUP BY c.id " +
-                "ORDER BY c.name";
-
-        Cursor cursor = db.rawQuery(query, null);
-
-        // Danh sách các phần của biểu đồ
-        List<PieEntry> entries = new ArrayList<>();
-
-        while (cursor.moveToNext()) {
-            String categoryName = cursor.getString(0); // Tên danh mục
-            int taskCount = cursor.getInt(1);         // Số nhiệm vụ
-            entries.add(new PieEntry(taskCount, categoryName)); // Thêm mục vào biểu đồ
-        }
-        cursor.close();
+        ArrayList<PieEntry> entries = statisticDAO.getData();
 
         // Tạo PieDataSet
         PieDataSet dataSet = new PieDataSet(entries, "Danh mục nhiệm vụ");
