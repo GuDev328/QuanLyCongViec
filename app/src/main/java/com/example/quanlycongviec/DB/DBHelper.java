@@ -1,14 +1,8 @@
-package com.example.quanlycongviec;
+package com.example.quanlycongviec.DB;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
-import com.github.mikephil.charting.data.BarEntry;
-
-import java.io.File;
-import java.util.ArrayList;
 
 public class DBHelper extends SQLiteOpenHelper {
 

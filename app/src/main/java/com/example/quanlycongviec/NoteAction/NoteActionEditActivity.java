@@ -1,19 +1,13 @@
 package com.example.quanlycongviec.NoteAction;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -22,14 +16,11 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.quanlycongviec.Auth.LoginActivity;
-import com.example.quanlycongviec.Common;
+import com.example.quanlycongviec.Utils.Common;
 import com.example.quanlycongviec.DAO.NoteDAO;
-import com.example.quanlycongviec.DTO.Category_DTO;
 import com.example.quanlycongviec.DTO.Note_DTO;
 import com.example.quanlycongviec.R;
-import com.example.quanlycongviec.ShareStore;
-import com.example.quanlycongviec.TaskAction.TaskActionEdit;
-import com.example.quanlycongviec.TaskAction.TaskActionView;
+import com.example.quanlycongviec.Utils.ShareStore;
 
 public class NoteActionEditActivity extends AppCompatActivity {
     private EditText editTextTitle, editTextContent;

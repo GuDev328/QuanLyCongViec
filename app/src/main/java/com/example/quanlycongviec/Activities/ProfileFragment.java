@@ -1,4 +1,4 @@
-package com.example.quanlycongviec;
+package com.example.quanlycongviec.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,7 +10,6 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,10 +21,12 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.quanlycongviec.Auth.LoginActivity;
-import com.example.quanlycongviec.Auth.RegisterActivity;
+import com.example.quanlycongviec.Utils.Common;
 import com.example.quanlycongviec.DAO.UserDAO;
 import com.example.quanlycongviec.DTO.User_DTO;
-import com.example.quanlycongviec.Profile.ChangePasswordActivity;
+import com.example.quanlycongviec.ProfileAction.ChangePasswordActivity;
+import com.example.quanlycongviec.R;
+import com.example.quanlycongviec.Utils.ShareStore;
 
 import java.io.ByteArrayOutputStream;
 
@@ -139,14 +140,13 @@ btnLogout=view.findViewById(R.id.btnLogout);
                         oldUser.setBirthday(Common.getSelectedRadioButtonValue(groupGender));
                         userDAO.update(oldUser.getId(),oldUser);
                         Toast.makeText(getActivity(), "Đã cập nhật thành công", Toast.LENGTH_SHORT).show();
-
-
             }
         });
 
         btnCancelEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                getUserInfo();
                 hideControls();
             }
         });
@@ -173,10 +173,7 @@ btnLogout=view.findViewById(R.id.btnLogout);
                 }
             }
         });
-
-
         getUserInfo();
-
         return view;
     }
     @Override

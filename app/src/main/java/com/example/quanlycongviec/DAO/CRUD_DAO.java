@@ -5,11 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.example.quanlycongviec.DBHelper;
-import com.example.quanlycongviec.ShareStore;
+import com.example.quanlycongviec.DB.DBHelper;
+import com.example.quanlycongviec.Utils.ShareStore;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public abstract class CRUD_DAO<T> {
     protected SQLiteDatabase db;

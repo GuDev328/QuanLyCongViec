@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".HomeFragment">
+    tools:context=".Activities.HomeFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -12,17 +12,33 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <Button
+        <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
-            android:layout_marginVertical="5dp"
-            style="@style/ButtonMainStyle"
-            android:textColor="@color/white"
-            android:drawableEnd="@android:drawable/arrow_down_float"
-            android:text="Chọn ngày"
-            android:id="@+id/btnPickDate" />
+            android:weightSum="2">
+            <Button
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="5dp"
+                style="@style/ButtonMainStyle"
+                android:textColor="@color/white"
+                android:drawableEnd="@android:drawable/arrow_down_float"
+                android:text="Chọn ngày"
+                android:id="@+id/btnPickDate" />
+            <Spinner
+                android:layout_weight="1"
+                android:id="@+id/spinnerCate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/edittext_box"
+                android:drawableEnd="@android:drawable/arrow_down_float"
+                android:padding="6dp"
+                android:textColorHint="#B0BEC5" />
+        </TableRow>
 
         <TextView
             android:layout_width="match_parent"

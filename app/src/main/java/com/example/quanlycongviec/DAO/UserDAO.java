@@ -6,8 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.quanlycongviec.DTO.User_DTO;
-import com.example.quanlycongviec.MainActivity;
-import com.example.quanlycongviec.ShareStore;
 
 public class UserDAO extends CRUD_DAO<User_DTO> {
 

@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.quanlycongviec.DAO.UserDAO;
 import com.example.quanlycongviec.MainActivity;
 import com.example.quanlycongviec.R;
-import com.example.quanlycongviec.ShareStore;
+import com.example.quanlycongviec.Utils.ShareStore;
 
 public class LoginActivity extends AppCompatActivity {
     Button btnRegister, btnLogin;
