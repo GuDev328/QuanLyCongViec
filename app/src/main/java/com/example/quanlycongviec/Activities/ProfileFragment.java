@@ -1,4 +1,4 @@
-package com.example.quanlycongviec;
+package com.example.quanlycongviec.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -21,9 +21,12 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.quanlycongviec.Auth.LoginActivity;
+import com.example.quanlycongviec.Utils.Common;
 import com.example.quanlycongviec.DAO.UserDAO;
 import com.example.quanlycongviec.DTO.User_DTO;
 import com.example.quanlycongviec.ProfileAction.ChangePasswordActivity;
+import com.example.quanlycongviec.R;
+import com.example.quanlycongviec.Utils.ShareStore;
 
 import java.io.ByteArrayOutputStream;
 

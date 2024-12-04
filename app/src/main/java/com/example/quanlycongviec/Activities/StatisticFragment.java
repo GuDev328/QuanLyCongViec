@@ -1,4 +1,4 @@
-package com.example.quanlycongviec;
+package com.example.quanlycongviec.Activities;
 
 import android.app.DatePickerDialog;
 import android.database.Cursor;
@@ -16,15 +16,11 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import com.example.quanlycongviec.DAO.TaskDAO;
-import com.example.quanlycongviec.DTO.Task_DTO;
+import com.example.quanlycongviec.DB.DBHelper;
+import com.example.quanlycongviec.R;
 import com.example.quanlycongviec.StatisticAction.DateAxisFormatter;
 import com.example.quanlycongviec.StatisticAction.StatisticDAO;
-import com.example.quanlycongviec.StatisticAction.StatisticStatus;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -35,7 +31,6 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.text.ParseException;
@@ -43,7 +38,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 public class StatisticFragment extends Fragment {

@@ -1,19 +1,13 @@
 package com.example.quanlycongviec.NoteAction;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -22,14 +16,11 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.quanlycongviec.Auth.LoginActivity;
-import com.example.quanlycongviec.Common;
+import com.example.quanlycongviec.Utils.Common;
 import com.example.quanlycongviec.DAO.NoteDAO;
-import com.example.quanlycongviec.DTO.Category_DTO;
 import com.example.quanlycongviec.DTO.Note_DTO;
 import com.example.quanlycongviec.R;
-import com.example.quanlycongviec.ShareStore;
-import com.example.quanlycongviec.TaskAction.TaskActionEdit;
-import com.example.quanlycongviec.TaskAction.TaskActionView;
+import com.example.quanlycongviec.Utils.ShareStore;
 
 public class NoteActionEditActivity extends AppCompatActivity {
     private EditText editTextTitle, editTextContent;
@@ -103,6 +94,7 @@ public class NoteActionEditActivity extends AppCompatActivity {
     }
 
     private void deleteNote() {
+        //Gọi hàm showConfirmDialog trong common để hiển thị hộp thoại xác nhận
         Common.showConfirmDialog(NoteActionEditActivity.this, "Xoá ghi chú",
                 "Bạn có chắc chắn muốn xoá ghi chú này?", new Runnable() {
                     @Override
@@ -117,8 +109,21 @@ public class NoteActionEditActivity extends AppCompatActivity {
     }
 
     private void editNote() {
-        noteSelected.setTitle(editTextTitle.getText().toString().trim());
-        noteSelected.setContent(editTextContent.getText().toString().trim());
+        String title = editTextTitle.getText().toString().trim();
+        String content = editTextContent.getText().toString().trim();
+        // Kiểm tra xem tiêu đề và nội dung có được nhập hay không
+        if (title.equals("")) {
+            Toast.makeText(NoteActionEditActivity.this, "Nhập tiêu đề ghi chú", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (content.equals("")) {
+            Toast.makeText(NoteActionEditActivity.this, "Nhập nội dung ghi chú", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        // Nếu tiêu đề và nội dung đều được nhập, tạo sửa ghi chú
+        noteSelected.setTitle(title);
+        noteSelected.setContent(content);
+        // Thêm ghi chú vào database
         long noteId = noteDAO.update(noteSelected.getId(), noteSelected);
         if (noteId != -1) {
             Toast.makeText(NoteActionEditActivity.this, "Chỉnh sửa ghi chú thành công", Toast.LENGTH_SHORT).show();

@@ -1,4 +1,4 @@
-package com.example.quanlycongviec;
+package com.example.quanlycongviec.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +14,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.quanlycongviec.Auth.LoginActivity;
+import com.example.quanlycongviec.R;
 
 public class SplashActivity extends AppCompatActivity {
 

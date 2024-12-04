@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.quanlycongviec.DAO.UserDAO;
 import com.example.quanlycongviec.DTO.User_DTO;
 import com.example.quanlycongviec.R;
-import com.example.quanlycongviec.ShareStore;
+import com.example.quanlycongviec.Utils.ShareStore;
 
 public class ChangePasswordActivity extends AppCompatActivity {
     Button btnCancel, btnConfirm;

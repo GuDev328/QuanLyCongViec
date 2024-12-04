@@ -16,12 +16,11 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.quanlycongviec.Common;
+import com.example.quanlycongviec.Utils.Common;
 import com.example.quanlycongviec.DAO.CategoryDAO;
 import com.example.quanlycongviec.DAO.TaskDAO;
 import com.example.quanlycongviec.DTO.Category_DTO;
 import com.example.quanlycongviec.R;
-import com.example.quanlycongviec.TaskAction.TaskActionView;
 
 public class CategoryView extends AppCompatActivity {
     TextView txtCategoryName, txtCategoryDescription;
