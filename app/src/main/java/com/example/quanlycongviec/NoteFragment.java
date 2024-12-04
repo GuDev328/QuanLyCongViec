@@ -117,11 +117,17 @@ public class NoteFragment extends Fragment {
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
         noteDao = new NoteDAO(getActivity());
+
+        // Khởi tạo RecyclerView
         recyclerView = view.findViewById(R.id.recyclerView);
+        // Sử dụng StaggeredGridLayoutManager để hiển thị danh sách theo dạng lưới
         StaggeredGridLayoutManager staggeredGridLayoutManager =
                 new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(staggeredGridLayoutManager);
+
+        // Khởi tạo FloatingActionButton
         FloatingActionButton fabAdd = view.findViewById(R.id.fabAddNote);
+        // Xử lý sự kiện khi FloatingActionButton được nhấn
         fabAdd.setOnClickListener(v -> {
             //Chuyển sang màn hình thêm mới
             Intent intent = new Intent(getContext(), NoteActionAddActivity.class);
@@ -185,6 +191,7 @@ public class NoteFragment extends Fragment {
 
 
     private void deleteSelectedNotes() {
+        // Hiển thị hộp thoại xác nhận trước khi xóa
         Common.showConfirmDialog(getActivity(), "Xoá ghi chú", "Bạn có chắc chắn muốn xóa các ghi chú đã chọn?", new Runnable() {
             @Override
             public void run() {
@@ -198,7 +205,6 @@ public class NoteFragment extends Fragment {
                 }
             }
         });
-
     }
 
     private void updateToolbarIcons() {
@@ -220,6 +226,7 @@ public class NoteFragment extends Fragment {
 
     // Lọc dữ liệu dựa trên từ khóa tìm kiếm
     private void filterNotes(String query) {
+        // Nếu từ khóa tìm kiếm rỗng, hiển thị tất cả ghi chú
         if (query.isEmpty()) {
             filteredNoteList = new ArrayList<>(noteList); // Nếu không có từ khóa tìm kiếm, hiển thị tất cả
         } else {

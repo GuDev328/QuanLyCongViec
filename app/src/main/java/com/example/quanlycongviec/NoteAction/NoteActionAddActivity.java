@@ -85,19 +85,26 @@ public class NoteActionAddActivity extends AppCompatActivity {
             return super.onOptionsItemSelected(item);
     }
 
+    // Lưu ghi chú
     private void saveNote() {
+        // Kiểm tra xem tiêu đề và nội dung có được nhập hay không
         if (editTextTitle.getText().toString().trim().equals("")) {
             Toast.makeText(NoteActionAddActivity.this, "Nhập tiêu đề ghi chú", Toast.LENGTH_SHORT).show();
             return;
         }
+        // Kiểm tra xem nội dung có được nhập hay không
         if (editTextContent.getText().toString().trim().equals("")) {
             Toast.makeText(NoteActionAddActivity.this, "Nhập nội dung ghi chú", Toast.LENGTH_SHORT).show();
             return;
         }
+        // Nếu tiêu đề và nội dung đều được nhập, tạo mới ghi chú
         Note_DTO newNote = new Note_DTO(0, user_id, editTextTitle.getText().toString().trim(), editTextContent.getText().toString().trim());
+        // Thêm ghi chú vào database
         long noteId = noteDAO.insert(newNote);
         if (noteId != -1) {
+            // Hiển thị thông báo thành công
             Toast.makeText(NoteActionAddActivity.this, "Tạo ghi chú thành công", Toast.LENGTH_SHORT).show();
+            // Trả về kết quả thành công
             Intent resultIntent = new Intent();
             setResult(RESULT_OK, resultIntent);  // Gửi kết quả về Activity 1
             finish();
