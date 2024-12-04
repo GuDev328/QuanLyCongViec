@@ -78,10 +78,9 @@ public class StatisticDAO {
 
         // Truy vấn nhiệm vụ theo khoảng ngày
         Cursor cursor = db.rawQuery(
-                "SELECT date, COUNT(*) as count " +
+                "SELECT date, COUNT(*) AS count " +
                         "FROM Task " +
-                        "WHERE status = 1 AND date BETWEEN ? AND ?" +
-                        "GROUP BY date ORDER BY date",
+                        "WHERE status = 1 AND date BETWEEN ? AND ?",
                 new String[]{startDate, endDate}
         );
 
@@ -131,7 +130,7 @@ public class StatisticDAO {
         Cursor cursor = db.rawQuery(
                 "SELECT DISTINCT date " +
                         "FROM Task " +
-                        "WHERE date BETWEEN ? AND ? " +
+                        "WHERE date BETWEEN ? AND ?" +
                         "ORDER BY date",
                 new String[]{startDate, endDate}
         );

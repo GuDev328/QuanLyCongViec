@@ -275,9 +275,6 @@ public class StatisticFragment extends Fragment {
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setCenterAxisLabels(false);
 
-//        xAxis.setTextColor(Color.WHITE);
-//        barDataSetCompleted.setValueTextColor(Color.WHITE);
-//        barDataSetPending.setValueTextColor(Color.WHITE);
         int numGroups = dates.size();
 
         // Nhóm các cột lại theo ngày
