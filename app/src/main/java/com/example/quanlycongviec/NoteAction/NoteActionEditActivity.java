@@ -94,6 +94,7 @@ public class NoteActionEditActivity extends AppCompatActivity {
     }
 
     private void deleteNote() {
+        //Gọi hàm showConfirmDialog trong common để hiển thị hộp thoại xác nhận
         Common.showConfirmDialog(NoteActionEditActivity.this, "Xoá ghi chú",
                 "Bạn có chắc chắn muốn xoá ghi chú này?", new Runnable() {
                     @Override
@@ -108,8 +109,21 @@ public class NoteActionEditActivity extends AppCompatActivity {
     }
 
     private void editNote() {
-        noteSelected.setTitle(editTextTitle.getText().toString().trim());
-        noteSelected.setContent(editTextContent.getText().toString().trim());
+        String title = editTextTitle.getText().toString().trim();
+        String content = editTextContent.getText().toString().trim();
+        // Kiểm tra xem tiêu đề và nội dung có được nhập hay không
+        if (title.equals("")) {
+            Toast.makeText(NoteActionEditActivity.this, "Nhập tiêu đề ghi chú", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (content.equals("")) {
+            Toast.makeText(NoteActionEditActivity.this, "Nhập nội dung ghi chú", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        // Nếu tiêu đề và nội dung đều được nhập, tạo sửa ghi chú
+        noteSelected.setTitle(title);
+        noteSelected.setContent(content);
+        // Thêm ghi chú vào database
         long noteId = noteDAO.update(noteSelected.getId(), noteSelected);
         if (noteId != -1) {
             Toast.makeText(NoteActionEditActivity.this, "Chỉnh sửa ghi chú thành công", Toast.LENGTH_SHORT).show();
