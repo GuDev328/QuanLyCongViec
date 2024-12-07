@@ -9,22 +9,30 @@ import android.util.Log;
 import com.example.quanlycongviec.DAO.TaskDAO;
 import com.example.quanlycongviec.DB.DBHelper;
 import com.example.quanlycongviec.DTO.Task_DTO;
+import com.example.quanlycongviec.Utils.ShareStore;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.PieEntry;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
 public class StatisticDAO {
     private SQLiteDatabase db;
     private int user_id;
     private TaskDAO taskDAO;
+    private ShareStore store ;
+
     private DBHelper dbHelper;
     public StatisticDAO(Context context) {
         dbHelper = new DBHelper(context);
         taskDAO = new TaskDAO(context);
-        UserSession userSession = UserSession.getInstance();
-        user_id = userSession.getUserId();
+        store= new ShareStore(context);
+        user_id =Integer.parseInt(store.getValue("user_id", null));
     }
     @SuppressLint("Range")
     public List<Task_DTO> getTaskData(String startDateString, String finishDateString){
@@ -72,24 +80,45 @@ public class StatisticDAO {
     public ArrayList<StatisticStatus> getTaskStatus(String startDateString, String finishDateString){
         return getPercentStatus("Task", startDateString, finishDateString);
     }
+    public  ArrayList<PieEntry> getData() {
+        // Truy vấn để lấy số nhiệm vụ theo danh mục
+        String query = "SELECT c.name AS category_name, COUNT(t.id) AS task_count " +
+                "FROM Category c " +
+                "LEFT JOIN Task t ON c.id = t.category_id " +
+                "WHERE t.user_id = ?" +
+                "GROUP BY c.id " +
+                "ORDER BY c.name";
+
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(user_id)});
+
+        // Danh sách các phần của biểu đồ
+        ArrayList<PieEntry> entries = new ArrayList<>();
+
+        while (cursor.moveToNext()) {
+            String categoryName = cursor.getString(0); // Tên danh mục
+            int taskCount = cursor.getInt(1);         // Số nhiệm vụ
+            entries.add(new PieEntry(taskCount, categoryName)); // Thêm mục vào biểu đồ
+        }
+        cursor.close();
+        return entries;
+    }
     public ArrayList<BarEntry> getTaskCompleteCountByDateRange(String startDate, String endDate) {
         ArrayList<BarEntry> barEntries = new ArrayList<>();
         db = dbHelper.getWritableDatabase();
 
-        // Truy vấn nhiệm vụ theo khoảng ngày
         Cursor cursor = db.rawQuery(
-                "SELECT date, COUNT(*) as count " +
+                "SELECT date, COUNT(*) AS count " +
                         "FROM Task " +
-                        "WHERE status = 1 AND date BETWEEN ? AND ?" +
+                        "WHERE status = 1 AND user_id = ? AND date BETWEEN ? AND ? " +
                         "GROUP BY date ORDER BY date",
-                new String[]{startDate, endDate}
+                new String[]{String.valueOf(user_id), startDate, endDate}
         );
 
-        int index = 0; // Dùng để hiển thị trên trục X
+        int index = 0;
         if (cursor.moveToFirst()) {
             do {
-                String date = cursor.getString(0); // Ngày
-                int count = cursor.getInt(1);     // Số nhiệm vụ
+                String date = cursor.getString(0);
+                int count = cursor.getInt(1);
                 barEntries.add(new BarEntry(index, count));
                 index++;
             } while (cursor.moveToNext());
@@ -97,24 +126,24 @@ public class StatisticDAO {
         cursor.close();
         return barEntries;
     }
+
     public ArrayList<BarEntry> getTaskPendingCountByDateRange(String startDate, String endDate) {
         ArrayList<BarEntry> barEntries = new ArrayList<>();
         db = dbHelper.getWritableDatabase();
 
-        // Truy vấn nhiệm vụ theo khoảng ngày
         Cursor cursor = db.rawQuery(
                 "SELECT date, COUNT(*) as count " +
                         "FROM Task " +
-                        "WHERE status = 0 AND date BETWEEN ? AND ?" +
+                        "WHERE status = 0 AND user_id = ? AND date BETWEEN ? AND ? " +
                         "GROUP BY date ORDER BY date",
-                new String[]{startDate, endDate}
+                new String[]{String.valueOf(user_id), startDate, endDate}
         );
 
-        int index = 0; // Dùng để hiển thị trên trục X
+        int index = 0;
         if (cursor.moveToFirst()) {
             do {
-                String date = cursor.getString(0); // Ngày
-                int count = cursor.getInt(1);     // Số nhiệm vụ
+                String date = cursor.getString(0);
+                int count = cursor.getInt(1);
                 barEntries.add(new BarEntry(index, count));
                 index++;
             } while (cursor.moveToNext());
@@ -123,49 +152,52 @@ public class StatisticDAO {
         return barEntries;
     }
 
-    public ArrayList<String> getTaskDatesByRange(String startDate, String endDate) {
-        ArrayList<String> dates = new ArrayList<>();
+    public ArrayList<Date> getTaskDatesByRange(String startDate, String endDate) {
+        ArrayList<Date> dates = new ArrayList<>();
         db = dbHelper.getWritableDatabase();
 
-        // Truy vấn danh sách ngày theo khoảng ngày
         Cursor cursor = db.rawQuery(
                 "SELECT DISTINCT date " +
                         "FROM Task " +
                         "WHERE date BETWEEN ? AND ? " +
                         "ORDER BY date",
-                new String[]{startDate, endDate}
+                new String[]{ startDate, endDate}
         );
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        if (cursor.moveToFirst()) {
+            do {
+                try {
+                    String dateString = cursor.getString(0); // Lấy giá trị ngày dưới dạng chuỗi
+                    Date date = dateFormat.parse(dateString); // Chuyển đổi chuỗi thành đối tượng Date
+                    if (date != null) {
+                        dates.add(date);
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return dates;
+    }
 
-        if (cursor.moveToFirst()) {
-            do {
-                dates.add(cursor.getString(0));
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        return dates;
-    }
-    public ArrayList<String> getTaskDates() {
-        ArrayList<String> dates = new ArrayList<>();
-        db = dbHelper.getWritableDatabase();
-        Cursor cursor = db.rawQuery("SELECT DISTINCT date FROM Task ORDER BY date", null);
-        if (cursor.moveToFirst()) {
-            do {
-                dates.add(cursor.getString(0));
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        return dates;
-    }
     public ArrayList<BarEntry> getTaskCompleteCountByDate() {
         ArrayList<BarEntry> barEntries = new ArrayList<>();
         db = dbHelper.getWritableDatabase();
-        Cursor cursor = db.rawQuery("SELECT date, COUNT(*) as count FROM Task WHERE status = 1 GROUP BY date ORDER BY date", null);
 
-        int index = 0; // Dùng làm trục X (vị trí trên biểu đồ)
+        Cursor cursor = db.rawQuery(
+                "SELECT date, COUNT(*) as count " +
+                        "FROM Task " +
+                        "WHERE status = 1 AND user_id = ? " +
+                        "GROUP BY date ORDER BY date",
+                new String[]{String.valueOf(user_id)}
+        );
+
+        int index = 0;
         if (cursor.moveToFirst()) {
             do {
-                String date = cursor.getString(0); // Lấy ngày
-                int count = cursor.getInt(1);     // Lấy số lượng nhiệm vụ
+                String date = cursor.getString(0);
+                int count = cursor.getInt(1);
                 barEntries.add(new BarEntry(index, count));
                 index++;
             } while (cursor.moveToNext());
@@ -173,21 +205,50 @@ public class StatisticDAO {
         cursor.close();
         return barEntries;
     }
+
     public ArrayList<BarEntry> getTaskPendingCountByDate() {
         ArrayList<BarEntry> barEntries1 = new ArrayList<>();
         db = dbHelper.getWritableDatabase();
-        Cursor cursor = db.rawQuery("SELECT date, COUNT(*) as count FROM Task WHERE status = 0 GROUP BY date ORDER BY date", null);
 
-        int index1 = 0; // Dùng làm trục X (vị trí trên biểu đồ)
+        Cursor cursor = db.rawQuery(
+                "SELECT date, COUNT(*) as count " +
+                        "FROM Task " +
+                        "WHERE status = 0 AND user_id = ? " +
+                        "GROUP BY date ORDER BY date",
+                new String[]{String.valueOf(user_id)}
+        );
+
+        int index1 = 0;
         if (cursor.moveToFirst()) {
             do {
-                String date = cursor.getString(0); // Lấy ngày
-                int count1 = cursor.getInt(1);     // Lấy số lượng nhiệm vụ
+                String date = cursor.getString(0);
+                int count1 = cursor.getInt(1);
                 barEntries1.add(new BarEntry(index1, count1));
                 index1++;
             } while (cursor.moveToNext());
         }
         cursor.close();
         return barEntries1;
+    }
+    public ArrayList<Date> getTaskDates() {
+        ArrayList<Date> dates = new ArrayList<>();
+        db = dbHelper.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT DISTINCT date FROM Task WHERE user_id = ?  ORDER BY date", new String[]{String.valueOf(user_id)});
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        if (cursor.moveToFirst()) {
+            do {
+                try {
+                    String dateString = cursor.getString(0); // Lấy giá trị ngày dưới dạng chuỗi
+                    Date date = dateFormat.parse(dateString); // Chuyển đổi chuỗi thành đối tượng Date
+                    if (date != null) {
+                        dates.add(date);
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return dates;
     }
 }
