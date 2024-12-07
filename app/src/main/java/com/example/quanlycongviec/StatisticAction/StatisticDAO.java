@@ -13,8 +13,12 @@ import com.example.quanlycongviec.Utils.ShareStore;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.PieEntry;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
 public class StatisticDAO {
@@ -148,8 +152,8 @@ public class StatisticDAO {
         return barEntries;
     }
 
-    public ArrayList<String> getTaskDatesByRange(String startDate, String endDate) {
-        ArrayList<String> dates = new ArrayList<>();
+    public ArrayList<Date> getTaskDatesByRange(String startDate, String endDate) {
+        ArrayList<Date> dates = new ArrayList<>();
         db = dbHelper.getWritableDatabase();
 
         Cursor cursor = db.rawQuery(
@@ -159,10 +163,18 @@ public class StatisticDAO {
                         "ORDER BY date",
                 new String[]{ startDate, endDate}
         );
-
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         if (cursor.moveToFirst()) {
             do {
-                dates.add(cursor.getString(0));
+                try {
+                    String dateString = cursor.getString(0); // Lấy giá trị ngày dưới dạng chuỗi
+                    Date date = dateFormat.parse(dateString); // Chuyển đổi chuỗi thành đối tượng Date
+                    if (date != null) {
+                        dates.add(date);
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -218,13 +230,22 @@ public class StatisticDAO {
         cursor.close();
         return barEntries1;
     }
-    public ArrayList<String> getTaskDates() {
-        ArrayList<String> dates = new ArrayList<>();
+    public ArrayList<Date> getTaskDates() {
+        ArrayList<Date> dates = new ArrayList<>();
         db = dbHelper.getWritableDatabase();
-        Cursor cursor = db.rawQuery("SELECT DISTINCT date FROM Task  ORDER BY date", null);
+        Cursor cursor = db.rawQuery("SELECT DISTINCT date FROM Task WHERE user_id = ?  ORDER BY date", new String[]{String.valueOf(user_id)});
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         if (cursor.moveToFirst()) {
             do {
-                dates.add(cursor.getString(0));
+                try {
+                    String dateString = cursor.getString(0); // Lấy giá trị ngày dưới dạng chuỗi
+                    Date date = dateFormat.parse(dateString); // Chuyển đổi chuỗi thành đối tượng Date
+                    if (date != null) {
+                        dates.add(date);
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             } while (cursor.moveToNext());
         }
         cursor.close();

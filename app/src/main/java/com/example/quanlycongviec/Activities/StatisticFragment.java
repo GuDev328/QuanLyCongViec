@@ -94,7 +94,7 @@ public class StatisticFragment extends Fragment {
         createBarChart(null,null);
         createPieChart();
         // Fetch task data
-        loadStatisticsData(null, null);
+        loadStatisticsData(null, null,user_id);
 
         btnFilter.setOnClickListener(v -> {
             String startDate = txtStart.getText().toString();
@@ -109,9 +109,9 @@ public class StatisticFragment extends Fragment {
                 // Lấy dữ liệu theo khoảng ngày
                 ArrayList<BarEntry> barEntriesCompleted = statisticDAO.getTaskCompleteCountByDateRange(startDate,endDate);
                 ArrayList<BarEntry> barEntriesPending = statisticDAO.getTaskPendingCountByDateRange(startDate,endDate);
-                ArrayList<String> dates = statisticDAO.getTaskDatesByRange(startDate, endDate);
+                ArrayList<Date> dates = statisticDAO.getTaskDatesByRange(startDate, endDate);
 
-                if (barEntriesCompleted.isEmpty() || barEntriesPending.isEmpty()) {
+                if (barEntriesCompleted.isEmpty() && barEntriesPending.isEmpty()) {
                     Toast.makeText(getContext(), "Không có dữ liệu trong khoảng ngày đã chọn", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -134,16 +134,13 @@ public class StatisticFragment extends Fragment {
                 xAxis.setAxisMinimum(-0.5f);
 //                ArrayList<String> dates = dbHelper.getTaskDates(); // Lấy danh sách ngày
                 //      ArrayList<String> dates = dbHelper.getTaskDatesByRange(startDateString,finishDateString); // Lấy danh sách ngày
+//                ArrayList<Date> dates = statisticDAO.getTaskDates(); // Lấy danh sách ngày
 
                 xAxis.setValueFormatter(new DateAxisFormatter(dates)); // Đặt formatter cho trục X
                 xAxis.setGranularity(1f); // Bước nhảy trục X
                 xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
                 xAxis.setCenterAxisLabels(false);
 
-//        xAxis.setTextColor(Color.WHITE);
-//        barDataSetCompleted.setValueTextColor(Color.WHITE);
-//        barDataSetPending.setValueTextColor(Color.WHITE);
-                int numGroups = dates.size();
 
                 // Nhóm các cột lại theo ngày
                 barChart.getXAxis().setAxisMinimum(-0.25f); // Đảm bảo không bị lệch khỏi trục
@@ -162,11 +159,9 @@ public class StatisticFragment extends Fragment {
                 YAxis leftAxis = barChart.getAxisLeft();
                 leftAxis.setGranularity(1f);
                 leftAxis.setAxisMinimum(0f);
-//        leftAxis.setTextColor(Color.WHITE);
 
                 // Tùy chỉnh khác
                 barChart.getDescription().setEnabled(false); // Tắt phần mô tả góc dưới bên phải (nếu có)
-//        barChart.getLegend().setTextColor(Color.WHITE); // Màu chữ của chú thích (legend)
                 barChart.setFitBars(true); // Tự động căn chỉnh các cột trong biểu đồ
 
                 // Làm mới biểu đồ
@@ -185,11 +180,11 @@ public class StatisticFragment extends Fragment {
 
         return view;
     }
-    private void loadStatisticsData(String startDate, String endDate) {
+    private void loadStatisticsData(String startDate, String endDate, int userId) {
         try {
             SQLiteDatabase db = dbHelper.getReadableDatabase();
-            String completedQuery = "SELECT COUNT(*) FROM Task WHERE status = 1";
-            String pendingQuery = "SELECT COUNT(*) FROM Task WHERE status = 0";
+            String completedQuery = "SELECT COUNT(*) FROM Task WHERE status = 1 AND user_id = ?";
+            String pendingQuery = "SELECT COUNT(*) FROM Task WHERE status = 0 AND user_id = ?";
 
             // Thêm điều kiện ngày nếu cần
             if (startDate != null && endDate != null) {
@@ -197,22 +192,34 @@ public class StatisticFragment extends Fragment {
                 pendingQuery += " AND created_date BETWEEN ? AND ?";
             }
 
-            Cursor completedCursor = db.rawQuery(completedQuery, startDate != null ? new String[]{startDate, endDate} : null);
+            String[] completedArgs;
+            String[] pendingArgs;
+
+            if (startDate != null && endDate != null) {
+                completedArgs = new String[]{String.valueOf(userId), startDate, endDate};
+                pendingArgs = new String[]{String.valueOf(userId), startDate, endDate};
+            } else {
+                completedArgs = new String[]{String.valueOf(userId)};
+                pendingArgs = new String[]{String.valueOf(userId)};
+            }
+
+            Cursor completedCursor = db.rawQuery(completedQuery, completedArgs);
             completedCursor.moveToFirst();
             int completedCount = completedCursor.getInt(0);
             completedCursor.close();
 
-            Cursor pendingCursor = db.rawQuery(pendingQuery, startDate != null ? new String[]{startDate, endDate} : null);
+            Cursor pendingCursor = db.rawQuery(pendingQuery, pendingArgs);
             pendingCursor.moveToFirst();
             int pendingCount = pendingCursor.getInt(0);
             pendingCursor.close();
 
-            tvCompletedTasks.setText("Nhiệm vụ đã hoàn thành\n" + String.valueOf(completedCount));
-            tvPendingTasks.setText("Nhiệm vụ chưa hoàn thành\n" + String.valueOf(pendingCount));
+            tvCompletedTasks.setText("Nhiệm vụ đã hoàn thành\n" + completedCount);
+            tvPendingTasks.setText("Nhiệm vụ chưa hoàn thành\n" + pendingCount);
         } catch (Exception e) {
             Toast.makeText(getContext(), "Error loading data", Toast.LENGTH_SHORT).show();
         }
     }
+
 
 
     public void showDatePicker(){
@@ -265,9 +272,9 @@ public class StatisticFragment extends Fragment {
         // Tùy chỉnh trục X
         XAxis xAxis = barChart.getXAxis();
         xAxis.setAxisMinimum(-0.5f);
-        ArrayList<String> dates = statisticDAO.getTaskDates(); // Lấy danh sách ngày
+        ArrayList<Date> dates = statisticDAO.getTaskDates(); // Lấy danh sách ngày
   //      ArrayList<String> dates = dbHelper.getTaskDatesByRange(startDateString,finishDateString); // Lấy danh sách ngày
-
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         xAxis.setValueFormatter(new DateAxisFormatter(dates)); // Đặt formatter cho trục X
         xAxis.setGranularity(1f); // Bước nhảy trục X
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
