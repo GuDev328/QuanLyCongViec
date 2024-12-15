@@ -45,16 +45,16 @@
         android:inputType="textPassword"
         android:textColorHint="#B0BEC5" />
 
-    <TextView
-        android:id="@+id/txtForgotPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="textEnd"
-        android:textStyle="bold"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="70dp"
-        android:textSize="17dp"
-        android:text="Quên mật khẩu?"/>
+<!--    <TextView-->
+<!--        android:id="@+id/txtForgotPassword"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:textAlignment="textEnd"-->
+<!--        android:textStyle="bold"-->
+<!--        android:layout_marginRight="10dp"-->
+<!--        android:layout_marginBottom="70dp"-->
+<!--        android:textSize="17dp"-->
+<!--        android:text="Quên mật khẩu?"/>-->
 
     <Button
         android:layout_width="match_parent"

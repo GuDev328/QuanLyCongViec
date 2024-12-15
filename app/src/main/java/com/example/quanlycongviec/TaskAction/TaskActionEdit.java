@@ -138,7 +138,7 @@ public class TaskActionEdit extends AppCompatActivity {
                         setResult(RESULT_OK, resultIntent);  // Gửi kết quả về Activity 1
                         finish();
                     }else {
-                        Toast.makeText(TaskActionEdit.this, "Tạo công việc thất bại", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(TaskActionEdit.this, "Chỉnh sửa công việc thất bại", Toast.LENGTH_SHORT).show();
                     }
                 }
             });

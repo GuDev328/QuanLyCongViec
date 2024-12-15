@@ -221,7 +221,6 @@ public class HomeFragment extends Fragment {
         Collections.reverse(listNotDoneArr);
         TaskAdapter adapter = new TaskAdapter(getActivity(), R.layout.listview_list_task_not_done, listNotDoneArr);
         listNotDone.setAdapter(adapter);
-
         listDoneArr= taskDAO.getListDone(btnPickDate.getText().toString(), getCategoryID());
         Collections.reverse(listDoneArr);
         TaskAdapter adapter2 = new TaskAdapter(getActivity(), R.layout.listview_list_task_not_done, listDoneArr);

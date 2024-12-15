@@ -43,14 +43,14 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        txtForgotPassword= findViewById(R.id.txtForgotPassword);
-        txtForgotPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this, ForgotPassword.class);
-                startActivity(intent);
-            }
-        });
+//        txtForgotPassword= findViewById(R.id.txtForgotPassword);
+//        txtForgotPassword.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(LoginActivity.this, ForgotPassword.class);
+//                startActivity(intent);
+//            }
+//        });
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override

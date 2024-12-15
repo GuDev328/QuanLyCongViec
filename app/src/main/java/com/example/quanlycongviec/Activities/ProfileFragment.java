@@ -140,6 +140,8 @@ btnLogout=view.findViewById(R.id.btnLogout);
                         oldUser.setBirthday(Common.getSelectedRadioButtonValue(groupGender));
                         userDAO.update(oldUser.getId(),oldUser);
                         Toast.makeText(getActivity(), "Đã cập nhật thành công", Toast.LENGTH_SHORT).show();
+                        getUserInfo();
+                        hideControls();
             }
         });
 
@@ -214,7 +216,7 @@ btnLogout=view.findViewById(R.id.btnLogout);
                 RadioButton radioButton = (RadioButton) view;
                 if (radioButton.getText().toString().equals(userDTO.getGender())) {
                     radioButton.setChecked(true);
-                    break; // Thoát vòng lặp khi tìm thấy
+                    break;
                 }
             }
         }
