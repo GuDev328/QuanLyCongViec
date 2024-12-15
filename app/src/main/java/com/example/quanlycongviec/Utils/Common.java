@@ -104,7 +104,7 @@ public class Common {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         month = month + 1;
-                        String date = dayOfMonth + "/" + month + "/" + year;
+                        String date = String.format("%02d/%02d/%04d", dayOfMonth, month, year);
                         btn.setText(date);
                         if (callback != null) {
                             callback.run(); // gọi lại callback
@@ -125,7 +125,7 @@ public class Common {
                 new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int selectedHour, int selectedMinute) {
-                        btn.setText(selectedHour+":"+selectedMinute);
+                        btn.setText(String.format("%02d:%02d", selectedHour, selectedMinute));
                     }
                 }, hour, minute, true); // 'true' để hiển thị theo định dạng 24 giờ, 'false' cho AM/PM
 
