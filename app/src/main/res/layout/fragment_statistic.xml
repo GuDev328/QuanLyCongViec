@@ -57,8 +57,8 @@
         android:id="@+id/tableRow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="8dp"
+
+
         app:layout_constraintTop_toBottomOf="@id/tvPendingTasks"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -71,7 +71,7 @@
 
         <TextView
             android:id="@+id/txtStart"
-            android:layout_width="85dp"
+            android:layout_width="230px"
             android:layout_height="wrap_content"
             android:text="" />
 
@@ -83,7 +83,7 @@
 
         <TextView
             android:id="@+id/txtFinish"
-            android:layout_width="85dp"
+            android:layout_width="230px"
             android:layout_height="wrap_content"
             android:text="" />
         <ImageButton android:id="@+id/showDatePicker" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/baseline_date_range_24"/>
